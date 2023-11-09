@@ -33,6 +33,15 @@ app.on("ready", () => {
     ipcMain.on("key: sendValue", (err, data) => {
         console.log(data)
     })
+
+    ipcMain.on("key: openNewWindow", () => {
+        console.log("Window Opened!");
+        newWindow();
+    })
+
+    mainWindow.on("close", () => {
+        app.quit();
+    })
 });
 
 const mainMenuTemplate = [
@@ -72,3 +81,28 @@ const mainMenuTemplate = [
     ]
     }
 ]
+
+function newWindow() {
+    addWindow = new BrowserWindow({
+        width: 400,
+        height: 400,
+        title: "New Window",
+        webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+        }
+    })
+
+    addWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "../pages/new.html"),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+
+    addWindow.on("close", () => {
+        addWindow = null;
+    })
+}
