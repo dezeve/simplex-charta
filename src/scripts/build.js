@@ -30,8 +30,8 @@ app.on("ready", () => {
     const mainMenu = electron.Menu.buildFromTemplate(mainMenuTemplate);
     Menu.setApplicationMenu(mainMenu);
 
-    ipcMain.on("key: sendValue", (err, data) => {
-        console.log(data)
+    ipcMain.on("key: openNewTodoWindow", () => {
+        newTodoWindow();
     })
 
     ipcMain.on("key: openNewWindow", () => {
@@ -65,6 +65,12 @@ const mainMenuTemplate = [
         ]
     },
     {
+        label: "Add New Todo",
+        click() {
+            newTodoWindow();
+        }
+    },
+    {
     label: "Dev Tools",
     submenu: [
         {
@@ -91,12 +97,39 @@ function newWindow() {
         nodeIntegration: true,
         contextIsolation: false,
         enableRemoteModule: true
-        }
+        },
+        resizable: false
     })
 
     addWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/new.html"),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+
+    addWindow.on("close", () => {
+        addWindow = null;
+    })
+}
+
+function newTodoWindow() {
+    addWindow = new BrowserWindow({
+        width: 500,
+        height: 250,
+        title: "Add Todo",
+        webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+        },
+        resizable: false
+    })
+
+    addWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "../pages/newTodo.html"),
             protocol: "file:",
             slashes: true
         })
