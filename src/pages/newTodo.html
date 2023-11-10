@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <title>Add Todo</title>
+    <title>New Todo</title>
 </head>
 <body>
     <div class="container mt-3 py-3">
-        <h3 class="text-center">New Todo</h3>
+        <h3 class="text-center">Add New Todo</h3>
         <div class="row align-items-center justify-content-center d-flex my-3">
             <div class="col-auto">
-                <input class="form-control" type="text" id="sendValue" placeholder="Type New Todo Here">
+                <input class="form-control" type="text" id="sendValue" placeholder="Type Here">
             </div>
-            <button class="btn btn-secondary col-auto me-1">Cancel</button>
+            <button class="btn btn-secondary col-auto me-1" id="newTodoExit">Cancel</button>
             <button class="btn btn-primary col-auto">Save</button>
+            <script src="../scripts/newTodo.js"></script>
         </div>
     </div>
 </body>

@@ -8,7 +8,3 @@ let openNewWindowButton = document.querySelector("#openNewWindowButton");
 newTodoButton.addEventListener("click", () => {
     ipcRenderer.send("key: openNewTodoWindow", sendValue.value);
 })
-
-openNewWindowButton.addEventListener("click", () => {
-    ipcRenderer.send("key: openNewWindow", true);
-})

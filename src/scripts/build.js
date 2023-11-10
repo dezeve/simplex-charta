@@ -2,7 +2,12 @@ const electron = require("electron");
 const url = require("url");
 const path = require("path");
 
-const { app, BrowserWindow, Menu, ipcMain } = electron;
+const { app, BrowserWindow, Menu, ipcMain, Notification } = electron;
+
+const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
+const NEW_WINDOW_NOTIFICATION_BODY = "You cannot open multiple instances of this window"
+
+let isNewTodoWindowOpened = false;
 
 let mainWindow;
 
@@ -34,9 +39,10 @@ app.on("ready", () => {
         newTodoWindow();
     })
 
-    ipcMain.on("key: openNewWindow", () => {
-        console.log("Window Opened!");
-        newWindow();
+    ipcMain.on("newTodo: close", () => {
+        console.log("New Todo Window Closed!");
+        addWindow.close();
+        addWindow = 0;
     })
 
     mainWindow.on("close", () => {
@@ -65,10 +71,16 @@ const mainMenuTemplate = [
         ]
     },
     {
-        label: "Add New Todo",
-        click() {
-            newTodoWindow();
-        }
+        label: "Todo Options",
+        submenu: [
+            {
+                label: "Add New Todo",
+                click() {
+                    (!isNewTodoWindowOpened) ? newTodoWindow() : showWindowErrorNotification()
+                    isNewTodoWindowOpened = true;
+                }
+            }
+        ]
     },
     {
     label: "Dev Tools",
@@ -88,43 +100,18 @@ const mainMenuTemplate = [
     }
 ]
 
-function newWindow() {
-    addWindow = new BrowserWindow({
-        width: 400,
-        height: 400,
-        title: "New Window",
-        webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    addWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/new.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    addWindow.on("close", () => {
-        addWindow = null;
-    })
-}
-
 function newTodoWindow() {
     addWindow = new BrowserWindow({
         width: 500,
         height: 250,
-        title: "Add Todo",
+        title: "New Todo",
         webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
         enableRemoteModule: true
         },
-        resizable: false
+        resizable: false,
+        frame: false
     })
 
     addWindow.loadURL(
@@ -138,4 +125,11 @@ function newTodoWindow() {
     addWindow.on("close", () => {
         addWindow = null;
     })
+}
+
+function showWindowErrorNotification() {
+    new Notification({
+        title: NEW_WINDOW_NOTIFICATION_TITLE,
+        body: NEW_WINDOW_NOTIFICATION_BODY
+    }).show()
 }
