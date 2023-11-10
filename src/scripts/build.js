@@ -38,15 +38,15 @@ app.on("ready", () => {
 
     ipcMain.on("key: closeNewTodo", () => {
         console.log("New Todo Window Closed!")
-        addNewAddTodoWindow.close()
-        addNewAddTodoWindow = 0
+        newTodoWindow.close()
+        newTodoWindow = 0
         isNewAddTodoWindowOpened = false
     })
 
     ipcMain.on("key: closeTodoList", () => {
         console.log("Closed Todo List Window!")
-        addTodoListWindow.close()
-        addTodoListWindow = 0
+        todoListWindow.close()
+        todoListWindow = 0
         isNewTodoListOpened = false
     })
 
@@ -113,20 +113,21 @@ const mainMenuTemplate = [
 ]
 
 function newAddTodoWindow() {
-    addNewAddTodoWindow = new BrowserWindow({
+    newTodoWindow = new BrowserWindow({
         width: 500,
-        height: 250,
+        height: 200,
         title: "New Todo",
         webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
         enableRemoteModule: true
         },
-        resizable: false,
-        frame: false
+        resizable: false
     })
 
-    addNewAddTodoWindow.loadURL(
+    newTodoWindow.setMenu(null)
+
+    newTodoWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/newTodo.html"),
             protocol: "file:",
@@ -134,13 +135,14 @@ function newAddTodoWindow() {
         })
     )
 
-    addNewAddTodoWindow.on("close", () => {
-        addNewAddTodoWindow = null
+    newTodoWindow.on("close", () => {
+        newTodoWindow = null
+        isNewAddTodoWindowOpened = false
     })
 }
 
 function newTodoList() {
-    addTodoListWindow = new BrowserWindow({
+    todoListWindow = new BrowserWindow({
         width: 600,
         height: 600,
         title: "Todo List",
@@ -149,11 +151,12 @@ function newTodoList() {
         contextIsolation: false,
         enableRemoteModule: true
         },
-        resizable: false,
-        frame: false
+        resizable: false
     })
 
-    addTodoListWindow.loadURL(
+    todoListWindow.setMenu(null)
+
+    todoListWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/todoList.html"),
             protocol: "file:",
@@ -161,8 +164,9 @@ function newTodoList() {
         })
     )
 
-    addTodoListWindow.on("close", () => {
-        addTodoListWindow = null
+    todoListWindow.on("close", () => {
+        todoListWindow = null
+        isNewTodoListOpened = false
     })
 }
 
