@@ -67,7 +67,9 @@ app.on("ready", () => {
                 id: todoList.length + 1,
                 text: data
             })
-            console.log(todoList)
+
+            mainWindow.webContents.send("key: addTodoItem", todoList)
+
             showAddTodoSuccessNotification()
             newTodoWindow.close()
             isNewAddTodoWindowOpened = false
