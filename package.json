@@ -2,7 +2,7 @@
   "name": "code-with-to-do",
   "version": "1.0.0",
   "description": "",
-  "main": "src/scripts/build.js",
+  "main": "src/build/build.js",
   "scripts": {
     "start": "electron ."
   },
