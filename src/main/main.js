@@ -10,10 +10,15 @@ const NEW_WINDOW_NOTIFICATION_BODY = "You cannot open multiple instances of this
 const ADD_TODO_SUCCESS_NOTIFICATION_TITLE= "Success!"
 const ADD_TODO_SUCCESS_NOTIFICATION_BODY= "The new todo has been successfully saved"
 
+const TODO_DATA_ERROR_NOTIFICATION_TITLE = "Error!"
+const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
+
 let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 
 let mainWindow
+
+let todoList = [];
 
 app.on("ready", () => {
     console.log("Platform=\t" + process.platform)
@@ -56,10 +61,19 @@ app.on("ready", () => {
         isNewAddTodoWindowOpened = true
     })
 
-    ipcMain.on("key: saveTodo", () => {
-        showAddTodoSuccessNotification()
-        newTodoWindow.close()
-        isNewAddTodoWindowOpened = false
+    ipcMain.on("key: saveTodo", (err, data) => {
+        if(data) {
+            todoList.push({
+                id: todoList.length + 1,
+                text: data
+            })
+            console.log(todoList)
+            showAddTodoSuccessNotification()
+            newTodoWindow.close()
+            isNewAddTodoWindowOpened = false
+        } else {
+            showTodoDataErrorNotification()
+        }
     })
 
     mainWindow.on("close", () => {
@@ -182,6 +196,10 @@ function newTodoList() {
     })
 }
 
+function getTodoList() {
+    console.log(todoList)
+}
+
 function showWindowErrorNotification() {
     new Notification({
         title: NEW_WINDOW_NOTIFICATION_TITLE,
@@ -193,5 +211,12 @@ function showAddTodoSuccessNotification() {
     new Notification({
         title: ADD_TODO_SUCCESS_NOTIFICATION_TITLE,
         body: ADD_TODO_SUCCESS_NOTIFICATION_BODY
+    }).show()
+}
+
+function showTodoDataErrorNotification() {
+    new Notification({
+        title: TODO_DATA_ERROR_NOTIFICATION_TITLE,
+        body: TODO_DATA_ERROR_NOTIFICATION_BODY
     }).show()
 }
