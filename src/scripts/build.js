@@ -7,6 +7,9 @@ const { app, BrowserWindow, Menu, ipcMain, Notification } = electron
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "You cannot open multiple instances of this window"
 
+const ADD_TODO_SUCCESS_NOTIFICATION_TITLE= "Success!"
+const ADD_TODO_SUCCESS_NOTIFICATION_BODY= "The new todo has been successfully saved"
+
 let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 
@@ -37,17 +40,26 @@ app.on("ready", () => {
     Menu.setApplicationMenu(mainMenu)
 
     ipcMain.on("key: closeNewTodo", () => {
-        console.log("New Todo Window Closed!")
         newTodoWindow.close()
         newTodoWindow = 0
         isNewAddTodoWindowOpened = false
     })
 
     ipcMain.on("key: closeTodoList", () => {
-        console.log("Closed Todo List Window!")
         todoListWindow.close()
         todoListWindow = 0
         isNewTodoListOpened = false
+    })
+
+    ipcMain.on("key: openAddTodo", () => {
+        (!isNewAddTodoWindowOpened) ? newAddTodoWindow() : showWindowErrorNotification()
+        isNewAddTodoWindowOpened = true
+    })
+
+    ipcMain.on("key: saveTodo", () => {
+        showAddTodoSuccessNotification()
+        newTodoWindow.close()
+        isNewAddTodoWindowOpened = false
     })
 
     mainWindow.on("close", () => {
@@ -174,5 +186,12 @@ function showWindowErrorNotification() {
     new Notification({
         title: NEW_WINDOW_NOTIFICATION_TITLE,
         body: NEW_WINDOW_NOTIFICATION_BODY
+    }).show()
+}
+
+function showAddTodoSuccessNotification() {
+    new Notification({
+        title: ADD_TODO_SUCCESS_NOTIFICATION_TITLE,
+        body: ADD_TODO_SUCCESS_NOTIFICATION_BODY
     }).show()
 }
