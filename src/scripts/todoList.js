@@ -11,3 +11,33 @@ closeTodoListButton.addEventListener("click", () => {
 addTodoButton.addEventListener("click", () => {
     ipcRenderer.send("key: openAddTodo")
 })
+
+ipcRenderer.on("key: addTodoItem", (e, todo) => {
+    const container = document.querySelector(".todo-container")
+
+    const row = document.createElement("div")
+    row.className = "row card my-2"
+
+    const cardBody = document.createElement("div")
+    cardBody.className = "card-body text-start"
+
+    const p = document.createElement("p")
+    p.className = "card-text"
+    p.innerText = todo.text
+
+    const a = document.createElement("a")
+    a.className = "btn btn-danger"
+    a.innerText = "Delete"
+
+    a.addEventListener("click", () => {
+        if(confirm("Are you sure to delete this Todo?")){
+        }
+    })
+
+    cardBody.appendChild(p)
+    cardBody.appendChild(a)
+
+    row.appendChild(cardBody)
+
+    container.appendChild(row)
+})

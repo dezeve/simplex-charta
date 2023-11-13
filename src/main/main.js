@@ -63,12 +63,14 @@ app.on("ready", () => {
 
     ipcMain.on("key: saveTodo", (err, data) => {
         if(data) {
-            todoList.push({
+            let todo = {
                 id: todoList.length + 1,
                 text: data
-            })
+            }
 
-            mainWindow.webContents.send("key: addTodoItem", todoList)
+            todoList.push(todo)
+
+            todoListWindow.webContents.send("key: addTodoItem", todo)
 
             showAddTodoSuccessNotification()
             newTodoWindow.close()
