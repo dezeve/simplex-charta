@@ -18,7 +18,7 @@ let isNewTodoListOpened = false
 
 let mainWindow
 
-let todoList = [];
+let todoList = []
 
 app.on("ready", () => {
     console.log("Platform=\t" + process.platform)

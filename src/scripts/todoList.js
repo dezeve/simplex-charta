@@ -4,6 +4,8 @@ const { ipcRenderer } = electron
 let closeTodoListButton = document.querySelector("#closeTodoListButton")
 let addTodoButton = document.querySelector("#addTodoButton")
 
+checkTodoCount()
+
 closeTodoListButton.addEventListener("click", () => {
     ipcRenderer.send("key: closeTodoList")
 })
@@ -40,4 +42,16 @@ ipcRenderer.on("key: addTodoItem", (e, todo) => {
     row.appendChild(cardBody)
 
     container.appendChild(row)
+    checkTodoCount()
 })
+
+function checkTodoCount() {
+    const container = document.querySelector(".todo-container")
+    const alertContainer = document.querySelector(".alert-container")
+
+    if (container.children.length !== 0) {
+        alertContainer.style.display = "none"
+    } else {
+        alertContainer.style.display = "block"
+    }
+}
