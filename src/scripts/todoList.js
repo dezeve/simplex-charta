@@ -26,8 +26,8 @@ ipcRenderer.on("key: addTodoItem", (e, todo) => {
     p.innerText = todo.text
 
     const a = document.createElement("a")
-    a.className = "btn btn-danger"
-    a.innerText = "Delete"
+    a.className = "btn btn-success"
+    a.innerText = "Done"
 
     a.addEventListener("click", () => {
         if(confirm("Are you sure to delete this Todo?")){
