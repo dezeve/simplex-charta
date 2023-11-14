@@ -2,6 +2,10 @@ const electron = require("electron")
 const url = require("url")
 const path = require("path")
 
+const fs = require("fs")
+
+const todoData = require("../database/todoData.json")
+
 const { app, BrowserWindow, Menu, ipcMain, Notification } = electron
 
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
@@ -17,8 +21,6 @@ let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 
 let mainWindow
-
-let todoList = []
 
 app.on("ready", () => {
     console.log("Platform=\t" + process.platform)
@@ -64,11 +66,17 @@ app.on("ready", () => {
     ipcMain.on("key: saveTodo", (err, data) => {
         if(data) {
             let todo = {
-                id: todoList.length + 1,
+                id: todoData.length + 1,
                 text: data
             }
 
-            todoList.push(todo)
+            todoData.push(todo)
+
+            fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), err => {
+                if(err) {
+                    throw err
+                }
+            })
 
             todoListWindow.webContents.send("key: addTodoItem", todo)
 
@@ -200,8 +208,8 @@ function newTodoList() {
     })
 }
 
-function getTodoList() {
-    console.log(todoList)
+function getTodoData() {
+    console.log(todoData)
 }
 
 function showWindowErrorNotification() {

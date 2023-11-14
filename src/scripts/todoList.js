@@ -31,8 +31,10 @@ ipcRenderer.on("key: addTodoItem", (e, todo) => {
     a.className = "btn btn-success"
     a.innerText = "Done"
 
-    a.addEventListener("click", () => {
+    a.addEventListener("click", (e) => {
         if(confirm("Are you sure to delete this Todo?")){
+            e.target.parentNode.parentNode.remove()
+            checkTodoCount()
         }
     })
 
