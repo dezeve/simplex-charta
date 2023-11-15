@@ -21,14 +21,14 @@ ipcRenderer.on("key: addTodoItem", (e, todo) => {
     row.className = "row card my-2"
 
     const cardBody = document.createElement("div")
-    cardBody.className = "card-body text-start"
+    cardBody.className = "card-body text-start row"
 
     const p = document.createElement("p")
-    p.className = "card-text"
+    p.className = "card-text col-sm-9"
     p.innerText = todo.text
 
     const a = document.createElement("a")
-    a.className = "btn btn-success"
+    a.className = "btn btn-success col-sm-3 align-self-center"
     a.innerText = "Done"
 
     a.addEventListener("click", (e) => {
@@ -50,6 +50,8 @@ ipcRenderer.on("key: addTodoItem", (e, todo) => {
 function checkTodoCount() {
     const container = document.querySelector(".todo-container")
     const alertContainer = document.querySelector(".alert-container")
+
+    document.querySelector(".total-count-container").innerText = container.children.length
 
     if (container.children.length !== 0) {
         alertContainer.style.display = "none"
