@@ -80,6 +80,11 @@ app.on("ready", () => {
             showAddTodoSuccessNotification()
             newTodoWindow.close()
             isNewAddTodoWindowOpened = false
+            if(isNewTodoListOpened) {
+                todoListWindow.close()
+                newTodoList()
+                isNewTodoListOpened = true
+            }
         } else {
             showTodoDataErrorNotification()
         }
