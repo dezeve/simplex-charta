@@ -66,20 +66,17 @@ app.on("ready", () => {
     ipcMain.on("key: saveTodo", (err, data) => {
         if(data) {
             let todo = {
-                id: todoData.length + 1,
+                id: todoData.todoItems.length + 1,
                 text: data
             }
 
-            todoData.push(todo)
+            todoData.todoItems.push(todo)
 
             fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), err => {
                 if(err) {
                     throw err
                 }
             })
-
-            todoListWindow.webContents.send("key: addTodoItem", todo)
-
             showAddTodoSuccessNotification()
             newTodoWindow.close()
             isNewAddTodoWindowOpened = false
