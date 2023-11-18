@@ -4,12 +4,10 @@ const path = require("path")
 
 const fs = require("fs")
 
-const todoData = require("../database/todoData.json")
-
 const { app, BrowserWindow, Menu, ipcMain, Notification } = electron
 
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
-const NEW_WINDOW_NOTIFICATION_BODY = "You cannot open multiple instances of this window"
+const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
 
 const ADD_TODO_SUCCESS_NOTIFICATION_TITLE= "Success!"
 const ADD_TODO_SUCCESS_NOTIFICATION_BODY= "The new todo has been successfully saved"
@@ -64,31 +62,36 @@ app.on("ready", () => {
     })
 
     ipcMain.on("key: saveTodo", (err, data) => {
-        if(data) {
-            let todo = {
-                id: todoData.todoItems.length + 1,
-                text: data
+        if (data) {
+          const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"));
+      
+          let todo = {
+            id: todoData.todoItems.length + 1,
+            text: data,
+          };
+      
+          todoData.todoItems.push(todo);
+      
+          fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), (err) => {
+            if (err) {
+              throw err;
             }
-
-            todoData.todoItems.push(todo)
-
-            fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), err => {
-                if(err) {
-                    throw err
-                }
-            })
-            showAddTodoSuccessNotification()
-            newTodoWindow.close()
-            isNewAddTodoWindowOpened = false
-            if(isNewTodoListOpened) {
-                todoListWindow.close()
-                newTodoList()
-                isNewTodoListOpened = true
+      
+            showAddTodoSuccessNotification();
+            newTodoWindow.close();
+            isNewAddTodoWindowOpened = false;
+      
+            if (isNewTodoListOpened) {
+              todoListWindow.close();
+              newTodoList();
+              isNewTodoListOpened = true;
             }
+          });
         } else {
-            showTodoDataErrorNotification()
+          showTodoDataErrorNotification();
         }
-    })
+      });
+      
 
     mainWindow.on("close", () => {
         app.quit()
