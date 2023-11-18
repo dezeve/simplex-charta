@@ -66,8 +66,7 @@ app.on("ready", () => {
           const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"));
       
           let todo = {
-            id: todoData.todoItems.length + 1,
-            text: data,
+            text: data
           };
       
           todoData.todoItems.push(todo);
