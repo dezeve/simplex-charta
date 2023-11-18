@@ -63,7 +63,7 @@ app.on("ready", () => {
 
     ipcMain.on("key: saveTodo", (err, data) => {
         if (data) {
-          const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"));
+          const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"))
       
           let todo = {
             text: data
@@ -79,12 +79,11 @@ app.on("ready", () => {
             showAddTodoSuccessNotification();
             newTodoWindow.close();
             isNewAddTodoWindowOpened = false;
-      
-            if (isNewTodoListOpened) {
-              todoListWindow.close();
-              newTodoList();
-              isNewTodoListOpened = true;
+
+            if(isNewTodoListOpened) {
+                todoListWindow.reload()
             }
+
           });
         } else {
           showTodoDataErrorNotification();
