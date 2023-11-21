@@ -4,7 +4,7 @@ const path = require("path")
 
 const fs = require("fs")
 
-const { app, BrowserWindow, Menu, ipcMain, Notification } = electron
+const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
 
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
@@ -89,6 +89,17 @@ app.on("ready", () => {
           showTodoDataErrorNotification();
         }
       });
+
+      ipcMain.on("key: saveFile", (event, content) => {
+
+        dialog.showSaveDialog({
+          title: "Save File",
+          filters: [{ name: "JavaScript Files", extensions: ["js"] }]
+        }).then((result) => {
+            fs.writeFileSync(result.filePath, content)
+        })
+
+      })
       
 
     mainWindow.on("close", () => {
