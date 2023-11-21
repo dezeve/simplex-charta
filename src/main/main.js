@@ -106,7 +106,10 @@ const mainMenuTemplate = [
     label: "File Options",
     submenu: [
         {
-            label: "New"
+            label: "Save", 
+            click() {
+                mainWindow.webContents.send("key: saveFile")
+            }
         },
         {
             label: "Open"

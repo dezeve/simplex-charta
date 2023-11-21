@@ -1,6 +1,10 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
 
+ipcRenderer.on("key: saveFile", () => {
+    console.log(editor.getValue())
+})
+
 ace.require("ace/ext/language_tools")
 
 const editor = ace.edit("editor")
