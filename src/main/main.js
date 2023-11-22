@@ -18,6 +18,9 @@ const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
 let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 
+let isFileExists = false
+let existingFilePath
+
 let mainWindow
 
 app.on("ready", () => {
@@ -92,53 +95,64 @@ app.on("ready", () => {
 
       ipcMain.on("key: saveFile", (event, content) => {
 
-        dialog.showSaveDialog({
-          title: "Save File",
-          filters:
-        [
-            {name: "JavaScript Files", extensions: ["js"] },
-            {name: "HTML Files", extensions: ["html"]},
-            {name: "Python Files", extensions: ["py"]},
-            {name: "CSS Files", extensions: ["css"]},
-            {name: "PHP Files", extensions: ["php"]},
-            {name: "Java Files", extensions: ["java"]},
-            {name: "JSON Files", extensions: ["json"]},
-            {name: "Text Files", extensions: ["txt"]}
-        ]
-        }).then((result) => {
+        if(isFileExists == false) {
 
-            const fileExtension = path.extname(result.filePath);
+            dialog.showSaveDialog({
+                title: "Save File",
+                filters:
+              [
+                  {name: "JavaScript Files", extensions: ["js"] },
+                  {name: "HTML Files", extensions: ["html"]},
+                  {name: "Python Files", extensions: ["py"]},
+                  {name: "CSS Files", extensions: ["css"]},
+                  {name: "PHP Files", extensions: ["php"]},
+                  {name: "Java Files", extensions: ["java"]},
+                  {name: "JSON Files", extensions: ["json"]},
+                  {name: "Text Files", extensions: ["txt"]}
+              ]
+              }).then((result) => {
+      
+                  const fileExtension = path.extname(result.filePath);
+      
+                  switch (fileExtension) {
+                  case ".js":
+                      mainWindow.webContents.send("key: setJavaScriptMode")
+                      break;
+                  case ".html":
+                      mainWindow.webContents.send("key: setHTMLMode")
+                      break;
+                  case ".py":
+                      mainWindow.webContents.send("key: setPythonMode")
+                      break;
+                  case ".css":
+                      mainWindow.webContents.send("key: setCSSMode")
+                      break;
+                  case ".php":
+                      mainWindow.webContents.send("key: setPHPMode")
+                      break;
+                  case ".java":
+                      mainWindow.webContents.send("key: setJavaMode")
+                      break;
+                  case ".json":
+                      mainWindow.webContents.send("key: setJSONMode")
+                      break;
+                  case ".txt":
+                      mainWindow.webContents.send("key: setTextMode")
+                      break;
+                  default:
+                      mainWindow.webContents.send("key: setTextMode")
+                  }
+                  fs.writeFileSync(result.filePath, content)
+                  existingFilePath = result.filePath
+              })
 
-            switch (fileExtension) {
-            case ".js":
-                mainWindow.webContents.send("key: setJavaScriptMode")
-                break;
-            case ".html":
-                mainWindow.webContents.send("key: setHTMLMode")
-                break;
-            case ".py":
-                mainWindow.webContents.send("key: setPythonMode")
-                break;
-            case ".css":
-                mainWindow.webContents.send("key: setCSSMode")
-                break;
-            case ".php":
-                mainWindow.webContents.send("key: setPHPMode")
-                break;
-            case ".java":
-                mainWindow.webContents.send("key: setJavaMode")
-                break;
-            case ".json":
-                mainWindow.webContents.send("key: setJSONMode")
-                break;
-            case ".txt":
-                mainWindow.webContents.send("key: setTextMode")
-                break;
-            default:
-                mainWindow.webContents.send("key: setTextMode")
-            }
-            fs.writeFileSync(result.filePath, content)
-        })
+            isFileExists = true
+      
+        } else {
+
+            fs.writeFileSync(existingFilePath, content)
+
+        }
 
       })
       
@@ -157,9 +171,6 @@ const mainMenuTemplate = [
     {
     label: "File Options",
     submenu: [
-            {
-                label: "New"
-            },
             {
                 label: "Open"
             },
