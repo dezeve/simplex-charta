@@ -94,7 +94,15 @@ app.on("ready", () => {
 
         dialog.showSaveDialog({
           title: "Save File",
-          filters: [{ name: "JavaScript Files", extensions: ["js"] }]
+          filters:
+        [
+            
+            {name: "JavaScript Files", extensions: ["js"] },
+            {name: "HTML Files", extensions: ["html"]},
+            {name: "Python Files", extensions: ["py"]},
+            {name: "CSS Files", extensions: ["css"]},
+            {name: "PHP Files", extensions: ["php"]}
+        ]
         }).then((result) => {
             fs.writeFileSync(result.filePath, content)
         })
