@@ -96,14 +96,47 @@ app.on("ready", () => {
           title: "Save File",
           filters:
         [
-            
             {name: "JavaScript Files", extensions: ["js"] },
             {name: "HTML Files", extensions: ["html"]},
             {name: "Python Files", extensions: ["py"]},
             {name: "CSS Files", extensions: ["css"]},
-            {name: "PHP Files", extensions: ["php"]}
+            {name: "PHP Files", extensions: ["php"]},
+            {name: "Java Files", extensions: ["java"]},
+            {name: "JSON Files", extensions: ["json"]},
+            {name: "Text Files", extensions: ["txt"]}
         ]
         }).then((result) => {
+
+            const fileExtension = path.extname(result.filePath);
+
+            switch (fileExtension) {
+            case ".js":
+                mainWindow.webContents.send("key: setJavaScriptMode")
+                break;
+            case ".html":
+                mainWindow.webContents.send("key: setHTMLMode")
+                break;
+            case ".py":
+                mainWindow.webContents.send("key: setPythonMode")
+                break;
+            case ".css":
+                mainWindow.webContents.send("key: setCSSMode")
+                break;
+            case ".php":
+                mainWindow.webContents.send("key: setPHPMode")
+                break;
+            case ".java":
+                mainWindow.webContents.send("key: setJavaMode")
+                break;
+            case ".json":
+                mainWindow.webContents.send("key: setJSONMode")
+                break;
+            case ".txt":
+                mainWindow.webContents.send("key: setTextMode")
+                break;
+            default:
+                mainWindow.webContents.send("key: setTextMode")
+            }
             fs.writeFileSync(result.filePath, content)
         })
 

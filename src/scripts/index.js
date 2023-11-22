@@ -8,12 +8,44 @@ ipcRenderer.on("key: saveFile", () => {
 
 })
 
+ipcRenderer.on("key: setJavaScriptMode", () => {
+    editor.session.setMode("ace/mode/javascript")
+})
+
+ipcRenderer.on("key: setHTMLMode", () => {
+    editor.session.setMode("ace/mode/html")
+})
+
+ipcRenderer.on("key: setPythonMode", () => {
+    editor.session.setMode("ace/mode/python")
+})
+
+ipcRenderer.on("key: setCSSMode", () => {
+    editor.session.setMode("ace/mode/css")
+})
+
+ipcRenderer.on("key: setPHPMode", () => {
+    editor.session.setMode("ace/mode/php")
+})
+
+ipcRenderer.on("key: setJavaMode", () => {
+    editor.session.setMode("ace/mode/java")
+})
+
+ipcRenderer.on("key: setJSONMode", () => {
+    editor.session.setMode("ace/mode/json")
+})
+
+ipcRenderer.on("key: setTextMode", () => {
+    editor.session.setMode("ace/mode/text")
+})
+
 ace.require("ace/ext/language_tools")
 
 const editor = ace.edit("editor")
 
 editor.setTheme("ace/theme/dawn")
-editor.session.setMode("ace/mode/javascript")
+editor.session.setMode("ace/mode/text")
 editor.setFontSize("17px")
 
 editor.setOptions({
