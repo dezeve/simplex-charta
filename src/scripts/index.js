@@ -1,6 +1,10 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
 
+ipcRenderer.on("key: openFile", (event, openedFileContent) => {
+    editor.setValue(openedFileContent)
+})
+
 ipcRenderer.on("key: saveFile", () => {
 
     const content = editor.getValue()

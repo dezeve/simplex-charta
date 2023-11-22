@@ -95,7 +95,7 @@ app.on("ready", () => {
 
       ipcMain.on("key: saveFile", (event, content) => {
 
-        if(isFileExists == false) {
+        if(!isFileExists) {
 
             dialog.showSaveDialog({
                 title: "Save File",
@@ -172,7 +172,49 @@ const mainMenuTemplate = [
     label: "File Options",
     submenu: [
             {
-                label: "Open"
+                label: "Open",
+                click() {
+                    dialog.showOpenDialog({
+                        title: "Open File"
+                    }).then((result) => {
+                        const fileExtension = path.extname(result.filePaths[0]).toString()
+
+                        switch (fileExtension) {
+                            case ".js":
+                                mainWindow.webContents.send("key: setJavaScriptMode")
+                                break;
+                            case ".html":
+                                mainWindow.webContents.send("key: setHTMLMode")
+                                break;
+                            case ".py":
+                                mainWindow.webContents.send("key: setPythonMode")
+                                break;
+                            case ".css":
+                                mainWindow.webContents.send("key: setCSSMode")
+                                break;
+                            case ".php":
+                                mainWindow.webContents.send("key: setPHPMode")
+                                break;
+                            case ".java":
+                                mainWindow.webContents.send("key: setJavaMode")
+                                break;
+                            case ".json":
+                                mainWindow.webContents.send("key: setJSONMode")
+                                break;
+                            case ".txt":
+                                mainWindow.webContents.send("key: setTextMode")
+                                break;
+                            default:
+                                mainWindow.webContents.send("key: setTextMode")
+                            }
+
+                        const openedFileContent = fs.readFileSync(result.filePaths[0]).toString()
+                        mainWindow.webContents.send("key: openFile", openedFileContent)
+
+                        isFileExists = true
+                        existingFilePath = result.filePaths[0].toString()
+                    })
+                }
             },
             {
                 label: "Save", 
