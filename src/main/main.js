@@ -124,18 +124,21 @@ const mainMenuTemplate = [
     {
     label: "File Options",
     submenu: [
-        {
-            label: "Save", 
-            click() {
-                mainWindow.webContents.send("key: saveFile")
+            {
+                label: "New"
+            },
+            {
+                label: "Open"
+            },
+            {
+                label: "Save", 
+                click() {
+                    mainWindow.webContents.send("key: saveFile")
+                }
+            },
+            {
+                label: "Close"
             }
-        },
-        {
-            label: "Open"
-        },
-        {
-            label: "Close"
-        }
         ]
     },
     {
