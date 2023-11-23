@@ -70,7 +70,7 @@ app.on("ready", () => {
       
           let todo = {
             text: data
-          };
+          }
       
           todoData.todoItems.push(todo);
       
@@ -79,9 +79,9 @@ app.on("ready", () => {
               throw err;
             }
       
-            showAddTodoSuccessNotification();
-            newTodoWindow.close();
-            isNewAddTodoWindowOpened = false;
+            showAddTodoSuccessNotification()
+            newTodoWindow.close()
+            isNewAddTodoWindowOpened = false
 
             if(isNewTodoListOpened) {
                 todoListWindow.reload()
@@ -111,7 +111,9 @@ app.on("ready", () => {
                   {name: "Text Files", extensions: ["txt"]}
               ]
               }).then((result) => {
-      
+                
+                if (result.canceled != true) {
+                    
                   const fileExtension = path.extname(result.filePath);
       
                   switch (fileExtension) {
@@ -142,11 +144,14 @@ app.on("ready", () => {
                   default:
                       mainWindow.webContents.send("key: setTextMode")
                   }
+
                   fs.writeFileSync(result.filePath, content)
                   existingFilePath = result.filePath
-              })
+                  isFileExists = true
+                  
+                }
 
-            isFileExists = true
+              })
       
         } else {
 
@@ -177,7 +182,9 @@ const mainMenuTemplate = [
                     dialog.showOpenDialog({
                         title: "Open File"
                     }).then((result) => {
-                        const fileExtension = path.extname(result.filePaths[0]).toString()
+
+                        if(result.canceled != true) {
+                            const fileExtension = path.extname(result.filePaths[0]).toString()
 
                         switch (fileExtension) {
                             case ".js":
@@ -213,6 +220,7 @@ const mainMenuTemplate = [
 
                         isFileExists = true
                         existingFilePath = result.filePaths[0].toString()
+                        }
                     })
                 }
             },
@@ -223,7 +231,13 @@ const mainMenuTemplate = [
                 }
             },
             {
-                label: "Close"
+                label: "Close",
+                click() {
+
+                    mainWindow.webContents.send("key: closeFile")
+                    isFileExists = false
+
+                }
             }
         ]
     },
@@ -320,10 +334,6 @@ function newTodoList() {
         todoListWindow = null
         isNewTodoListOpened = false
     })
-}
-
-function getTodoData() {
-    console.log(todoData)
 }
 
 function showWindowErrorNotification() {

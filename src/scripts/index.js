@@ -12,6 +12,10 @@ ipcRenderer.on("key: saveFile", () => {
 
 })
 
+ipcRenderer.on("key: closeFile", () => {
+    editor.setValue(null)
+})
+
 ipcRenderer.on("key: setJavaScriptMode", () => {
     editor.session.setMode("ace/mode/javascript")
 })
