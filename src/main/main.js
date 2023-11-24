@@ -36,6 +36,8 @@ app.on("ready", () => {
         }
     })
 
+    mainWindow.setMinimumSize(500, 300)
+
     mainWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/index.html"),
