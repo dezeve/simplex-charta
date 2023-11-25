@@ -17,6 +17,7 @@ const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
 
 let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
+let isAddSettingsWindowOpened = false
 
 let isFileExists = false
 let existingFilePath
@@ -263,6 +264,13 @@ const mainMenuTemplate = [
         ]
     },
     {
+        label: "Settings",
+        click() {
+            (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
+            isAddSettingsWindowOpened = true
+        }
+    },
+    {
     label: "Dev Tools",
     submenu: [
         {
@@ -335,6 +343,35 @@ function newTodoList() {
     todoListWindow.on("close", () => {
         todoListWindow = null
         isNewTodoListOpened = false
+    })
+}
+
+function newSettingsWindow() {
+    addSettingsWindow = new BrowserWindow({
+        width: 600,
+        height: 600,
+        title: "Settings",
+        webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+        },
+        resizable: false
+    })
+
+    addSettingsWindow.setMenu(null)
+
+    addSettingsWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "../pages/settings.html"),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+
+    addSettingsWindow.on("close", () => {
+        addSettingsWindow = null
+        isAddSettingsWindowOpened = false
     })
 }
 
