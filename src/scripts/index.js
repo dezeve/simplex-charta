@@ -55,7 +55,9 @@ const editor = ace.edit("editor")
 
 const fontSize = getFontSize()
 
-editor.setTheme("ace/theme/dawn")
+const theme = getTheme()
+
+editor.setTheme(theme)
 editor.session.setMode("ace/mode/text")
 editor.setFontSize(fontSize)
 
@@ -66,4 +68,9 @@ editor.setOptions({
 function getFontSize() {
     const fontSize = JSON.parse(fs.readFileSync("src/database/settings.json")).fontSize
     return fontSize
+}
+
+function getTheme() {
+    const theme = JSON.parse(fs.readFileSync("src/database/settings.json")).theme
+    return theme.dawn
 }
