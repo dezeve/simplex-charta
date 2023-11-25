@@ -1,5 +1,6 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
+const fs = require("fs")
 
 ipcRenderer.on("key: openFile", (event, openedFileContent) => {
     editor.setValue(openedFileContent)
@@ -52,10 +53,17 @@ ace.require("ace/ext/language_tools")
 
 const editor = ace.edit("editor")
 
+const fontSize = getFontSize()
+
 editor.setTheme("ace/theme/dawn")
 editor.session.setMode("ace/mode/text")
-editor.setFontSize("17px")
+editor.setFontSize(fontSize)
 
 editor.setOptions({
     enableLiveAutocompletion: true
 })
+
+function getFontSize() {
+    const fontSize = JSON.parse(fs.readFileSync("src/database/settings.json")).fontSize
+    return fontSize
+}
