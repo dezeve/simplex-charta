@@ -164,6 +164,11 @@ app.on("ready", () => {
 
       })
       
+      ipcMain.on("key: closeSettings", () => {
+        addSettingsWindow.close()
+        addSettingsWindow = 0
+        isAddSettingsWindowOpened = false
+      })
 
     mainWindow.on("close", () => {
         app.quit()
