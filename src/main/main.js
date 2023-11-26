@@ -364,7 +364,7 @@ function newSettingsWindow() {
         resizable: false
     })
 
-    addSettingsWindow.setMenu(null)
+    //addSettingsWindow.setMenu(null)
 
     addSettingsWindow.loadURL(
         url.format({
