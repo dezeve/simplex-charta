@@ -174,6 +174,10 @@ app.on("ready", () => {
         mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
       })
 
+      ipcMain.on("key: updateFontSize", (e, selectedFontSize) => {
+        mainWindow.webContents.send("key: updateEditorFontSize", selectedFontSize)
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })

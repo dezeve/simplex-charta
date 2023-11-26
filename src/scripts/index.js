@@ -59,6 +59,16 @@ ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
     editor.setTheme(theme)
 })
 
+ipcRenderer.on("key: updateEditorFontSize", (event, selectedFontSize) => {
+    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    settings.fontSize = selectedFontSize + "px"
+    const updatedSettings = JSON.stringify(settings, null, 2)
+    fs.writeFileSync("src/database/settings.json", updatedSettings)
+
+    const fontSize = settings.fontSize
+    editor.setFontSize(fontSize)
+})
+
 ace.require("ace/ext/language_tools")
 
 const editor = ace.edit("editor")
