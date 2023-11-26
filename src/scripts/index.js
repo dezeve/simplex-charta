@@ -49,6 +49,16 @@ ipcRenderer.on("key: setTextMode", () => {
     editor.session.setMode("ace/mode/text")
 })
 
+ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
+    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    settings.selectedTheme = selectedUpdateTheme
+    const updatedSettings = JSON.stringify(settings, null, 2)
+    fs.writeFileSync("src/database/settings.json", updatedSettings)
+
+    const theme = settings.theme[selectedUpdateTheme];
+    editor.setTheme(theme)
+})
+
 ace.require("ace/ext/language_tools")
 
 const editor = ace.edit("editor")

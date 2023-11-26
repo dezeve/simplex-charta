@@ -1,5 +1,5 @@
 const electron = require("electron")
-const {ipcRenderer } = electron
+const { ipcRenderer } = electron
 
 const closeSettingsButton = document.querySelector("#closeSettingsButton")
 
@@ -12,6 +12,6 @@ const themeList = document.querySelectorAll(".dropdown-item");
 themeList.forEach((theme) => {
   theme.addEventListener("click", (event) => {
     const selectedTheme = event.target.textContent;
-    console.log(selectedTheme);
+    ipcRenderer.send("key: updateEditorTheme", selectedTheme)
   })
 })

@@ -170,6 +170,10 @@ app.on("ready", () => {
         isAddSettingsWindowOpened = false
       })
 
+      ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
+        mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })
@@ -364,7 +368,7 @@ function newSettingsWindow() {
         resizable: false
     })
 
-    //addSettingsWindow.setMenu(null)
+    addSettingsWindow.setMenu(null)
 
     addSettingsWindow.loadURL(
         url.format({
