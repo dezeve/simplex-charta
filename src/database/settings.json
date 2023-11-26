@@ -41,5 +41,8 @@
         "twilight": "ace/theme/twilight",
         "vibrant_ink": "ace/theme/vibrant_ink"
         
-    }
+    },
+
+    "selectedTheme": "dawn"
+    
 }

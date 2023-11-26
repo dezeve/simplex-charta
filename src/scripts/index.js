@@ -71,6 +71,7 @@ function getFontSize() {
 }
 
 function getTheme() {
-    const theme = JSON.parse(fs.readFileSync("src/database/settings.json")).theme
-    return theme.dawn
+    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    selectedTheme = settings.selectedTheme
+    return settings.theme[selectedTheme]
 }
