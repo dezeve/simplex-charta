@@ -241,7 +241,8 @@ const mainMenuTemplate = [
                 }
             },
             {
-                label: "Save", 
+                label: "Save",
+                accelerator: "CTRL+S",
                 click() {
                     mainWindow.webContents.send("key: saveFile")
                 }
