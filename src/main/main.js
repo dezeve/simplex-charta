@@ -194,6 +194,7 @@ const mainMenuTemplate = [
     submenu: [
             {
                 label: "Open",
+                accelerator: "Ctrl+O",
                 click() {
                     dialog.showOpenDialog({
                         title: "Open File"
@@ -242,7 +243,7 @@ const mainMenuTemplate = [
             },
             {
                 label: "Save",
-                accelerator: "CTRL+S",
+                accelerator: "Ctrl+S",
                 click() {
                     mainWindow.webContents.send("key: saveFile")
                 }
