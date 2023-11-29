@@ -259,6 +259,7 @@ const mainMenuTemplate = [
 
                     mainWindow.webContents.send("key: closeFile")
                     isFileExists = false
+                    mainWindow.webContents.send("key: setTextMode")
 
                 }
             }
