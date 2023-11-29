@@ -178,6 +178,10 @@ app.on("ready", () => {
         mainWindow.webContents.send("key: updateEditorFontSize", selectedFontSize)
       })
 
+      ipcMain.on("key: showFontSizeError", () => {
+        dialog.showErrorBox("Error", "Invalid font size!")
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })
@@ -364,7 +368,7 @@ function newTodoList() {
 function newSettingsWindow() {
     addSettingsWindow = new BrowserWindow({
         width: 600,
-        height: 600,
+        height: 625,
         title: "Settings",
         webPreferences: {
         nodeIntegration: true,

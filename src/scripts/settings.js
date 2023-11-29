@@ -20,7 +20,9 @@ themeList.forEach((theme) => {
 
 saveFontSizeButton.addEventListener("click", () => {
   const fontSize = fontSizeInput.value
-  if (fontSize >= 1 && fontSize <= 99) {
+  if (fontSize >= 5 && fontSize <= 75) {
     ipcRenderer.send("key: updateFontSize", fontSize)
+  } else {
+    ipcRenderer.send("key: showFontSizeError")
   }
 })
