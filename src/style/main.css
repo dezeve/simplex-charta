@@ -1,9 +1,24 @@
 #editor {
-    width: 100%;
+    width: 90%;
     height: 100%;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     resize: none;
     outline: none;
+}
+
+#sidebar {
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 100%;
+    resize: none;
+    outline: none;
+    position: absolute;
+    background-color: rgb(155, 160, 164);
+}
+
+a:hover {
+    cursor: pointer;
 }
