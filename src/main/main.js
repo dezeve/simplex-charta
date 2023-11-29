@@ -233,6 +233,7 @@ const mainMenuTemplate = [
                                 mainWindow.webContents.send("key: setTextMode")
                                 break;
                             default:
+                                dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in Plain text mode.")
                                 mainWindow.webContents.send("key: setTextMode")
                             }
 
