@@ -95,3 +95,9 @@ function getTheme() {
     selectedTheme = settings.selectedTheme
     return settings.theme[selectedTheme]
 }
+
+const findAndReplaceAnchor = document.querySelector("#findAndReplaceAnchor")
+
+findAndReplaceAnchor.addEventListener("click", () => {
+    ipcRenderer.send("key: openFindAndReplace")
+})

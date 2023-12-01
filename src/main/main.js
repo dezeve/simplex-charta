@@ -18,6 +18,7 @@ const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
 let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 let isAddSettingsWindowOpened = false
+let isAddFindAndReplaceWindowOpened = false
 
 let isFileExists = false
 let existingFilePath
@@ -180,6 +181,11 @@ app.on("ready", () => {
 
       ipcMain.on("key: showFontSizeError", () => {
         dialog.showErrorBox("Error", "Invalid font size!")
+      })
+
+      ipcMain.on("key: openFindAndReplace", () => {
+        (!isAddFindAndReplaceWindowOpened) ? newFindAndReplaceWindow() : showWindowErrorNotification()
+        isAddFindAndReplaceWindowOpened = true
       })
 
     mainWindow.on("close", () => {
@@ -393,6 +399,35 @@ function newSettingsWindow() {
     addSettingsWindow.on("close", () => {
         addSettingsWindow = null
         isAddSettingsWindowOpened = false
+    })
+}
+
+function newFindAndReplaceWindow() {
+    addFindAndReplaceWindow = new BrowserWindow({
+        width: 600,
+        height: 400,
+        title: "Find and Replace",
+        webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+        },
+        resizable: false
+    })
+
+    addFindAndReplaceWindow.setMenu(null)
+
+    addFindAndReplaceWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "../pages/findAndReplace.html"),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+
+    addFindAndReplaceWindow.on("close", () => {
+        addFindAndReplaceWindow = null
+        isAddFindAndReplaceWindowOpened = false
     })
 }
 
