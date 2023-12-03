@@ -198,6 +198,10 @@ app.on("ready", () => {
         mainWindow.webContents.send("key: findAndReplace", data)
       })
 
+      ipcMain.on("key: showFindAndReplaceError", () => {
+        dialog.showErrorBox("Error", "Invalid find value!")
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })

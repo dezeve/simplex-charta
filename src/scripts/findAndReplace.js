@@ -17,5 +17,9 @@ doFindAndReplace.addEventListener("click", () => {
         replace: replaceValue.value
     }
     
-    ipcRenderer.send("key: doFindAndReplace", findAndReplaceData)
+    if (findValue.value != "") {
+        ipcRenderer.send("key: doFindAndReplace", findAndReplaceData)
+    } else {
+        ipcRenderer.send("key: showFindAndReplaceError")
+    }
 })
