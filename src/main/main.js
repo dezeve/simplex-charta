@@ -188,6 +188,12 @@ app.on("ready", () => {
         isAddFindAndReplaceWindowOpened = true
       })
 
+      ipcMain.on("key: closeFindAndReplace",  () => {
+        addFindAndReplaceWindow.close()
+        addFindAndReplaceWindow = 0
+        isAddFindAndReplaceWindowOpened = false
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })
