@@ -195,7 +195,7 @@ app.on("ready", () => {
       })
 
       ipcMain.on("key: doFindAndReplace", (err, data) => {
-        console.log(data)
+        mainWindow.webContents.send("key: findAndReplace", data)
       })
 
     mainWindow.on("close", () => {

@@ -102,5 +102,7 @@ findAndReplaceAnchor.addEventListener("click", () => {
     ipcRenderer.send("key: openFindAndReplace")
 })
 
-ipcRenderer.on("key: findAndReplace", () => {
+ipcRenderer.on("key: findAndReplace", (err, data) => {
+    editor.find(data.find)
+    editor.replaceAll(data.replace)
 })
