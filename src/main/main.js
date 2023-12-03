@@ -194,6 +194,10 @@ app.on("ready", () => {
         isAddFindAndReplaceWindowOpened = false
       })
 
+      ipcMain.on("key: doFindAndReplace", (err, data) => {
+        console.log(data)
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })

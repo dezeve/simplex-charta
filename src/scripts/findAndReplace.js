@@ -9,3 +9,13 @@ const doFindAndReplace = document.querySelector("#doFindAndReplace")
 closeFindAndReplace.addEventListener("click", () => {
     ipcRenderer.send("key: closeFindAndReplace")
 })
+
+doFindAndReplace.addEventListener("click", () => {
+
+    findAndReplaceData = {
+        find: findValue.value,
+        replace: replaceValue.value
+    }
+    
+    ipcRenderer.send("key: doFindAndReplace", findAndReplaceData)
+})
