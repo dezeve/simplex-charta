@@ -19,6 +19,7 @@ let isNewAddTodoWindowOpened = false
 let isNewTodoListOpened = false
 let isAddSettingsWindowOpened = false
 let isAddFindAndReplaceWindowOpened = false
+let isGotoSelectedLineWindowOpened = false
 
 let isFileExists = false
 let existingFilePath
@@ -200,6 +201,11 @@ app.on("ready", () => {
 
       ipcMain.on("key: showFindAndReplaceError", () => {
         dialog.showErrorBox("Error", "Invalid find value!")
+      })
+
+      ipcMain.on("key: openGotoSelectedLine", () => {
+        (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
+        isGotoSelectedLineWindowOpened = true
       })
 
     mainWindow.on("close", () => {
@@ -442,6 +448,35 @@ function newFindAndReplaceWindow() {
     addFindAndReplaceWindow.on("close", () => {
         addFindAndReplaceWindow = null
         isAddFindAndReplaceWindowOpened = false
+    })
+}
+
+function newGotoSelectedLineWindow() {
+    addGotoSelectedLineWindow = new BrowserWindow({
+        width: 400,
+        height: 200,
+        title: "Go to Selected Line",
+        webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+        },
+        resizable: false
+    })
+
+    addGotoSelectedLineWindow.setMenu(null)
+
+    addGotoSelectedLineWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "../pages/gotoSelectedLine.html"),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+
+    addGotoSelectedLineWindow.on("close", () => {
+        addGotoSelectedLineWindow = null
+        isGotoSelectedLineWindowOpened = false
     })
 }
 

@@ -106,3 +106,9 @@ ipcRenderer.on("key: findAndReplace", (err, data) => {
     editor.find(data.find)
     editor.replaceAll(data.replace)
 })
+
+const goLineAnchor = document.querySelector("#goLineAnchor")
+
+goLineAnchor.addEventListener("click", () => {
+    ipcRenderer.send("key: openGotoSelectedLine")
+})
