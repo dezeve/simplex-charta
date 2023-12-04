@@ -15,10 +15,20 @@
             <br /> <br />
             <a id="goLineAnchor" class="bi bi-arrow-right-square" style="font-size: 30px; color: black;"></a>
             <br /> <br />
-            <a class="bi bi-clipboard" style="font-size: 30px; color: black;"></a>
+            <a class="bi bi-clipboard" style="font-size: 30px; color: black;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></a>
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title mx-auto" id="offcanvasScrollingLabel"><b>Notebook</b></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <p>This is a notebook area.</p>
+                </div>
+            </div>
         </div>
     </div>
     <div id="editor"></div>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="../../node_modules/ace-builds/src-noconflict/ace.js"></script>
     <script src="../../node_modules/ace-builds/src-noconflict/ext-language_tools.js"></script>
     <script src="../scripts/index.js"></script>
