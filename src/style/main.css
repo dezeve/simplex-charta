@@ -20,6 +20,12 @@
     border-right: 4px solid rgb(95, 95, 216);
 }
 
+#sidebar a:last-child {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+}
+
 #terminal-container {
     bottom: 0;
     right: 0;

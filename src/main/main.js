@@ -230,6 +230,11 @@ app.on("ready", () => {
         ptyProcess.write(key)
       })
 
+      ipcMain.on("key: openSettings", () => {
+        (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
+        isAddSettingsWindowOpened = true
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })

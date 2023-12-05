@@ -124,3 +124,9 @@ ipcRenderer.on("key: getTerminalData", (e, data) => {
 terminal.onData(e => {
     ipcRenderer.send("key: getTerminalKeystroke", e)
 })
+
+const gotoSettingsAnchor = document.querySelector("#gotoSettingsAnchor")
+
+gotoSettingsAnchor.addEventListener("click", () => {
+    ipcRenderer.send("key: openSettings")
+})
