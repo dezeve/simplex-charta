@@ -2,9 +2,15 @@ const electron = require("electron")
 const url = require("url")
 const path = require("path")
 
+const os = require("os")
+
+const pty = require("node-pty")
+
 const fs = require("fs")
 
 const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
+
+const shell = os.platform() === "win32" ? "powershell.exe" : "bash"
 
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
@@ -206,6 +212,22 @@ app.on("ready", () => {
       ipcMain.on("key: openGotoSelectedLine", () => {
         (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
         isGotoSelectedLineWindowOpened = true
+      })
+
+      const ptyProcess = pty.spawn(shell, [], {
+        name: "xterm",
+        cols: 80,
+        rows: 50,
+        cwd: process.env.HOME,
+        env: process.env
+      })
+
+      ptyProcess.on("data", function(data) {
+        mainWindow.webContents.send("key: getTerminalData", data)
+      })
+
+      ipcMain.on("key: getTerminalKeystroke", (e, key) => {
+        ptyProcess.write(key)
       })
 
     mainWindow.on("close", () => {

@@ -1,6 +1,7 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
 const fs = require("fs")
+const { Terminal } = require("xterm")
 
 ipcRenderer.on("key: openFile", (event, openedFileContent) => {
     editor.setValue(openedFileContent)
@@ -111,4 +112,15 @@ const goLineAnchor = document.querySelector("#goLineAnchor")
 
 goLineAnchor.addEventListener("click", () => {
     ipcRenderer.send("key: openGotoSelectedLine")
+})
+
+const terminal = new Terminal()
+terminal.open(document.querySelector("#terminal"))
+
+ipcRenderer.on("key: getTerminalData", (e, data) => {
+    terminal.write(data)
+})
+
+terminal.onData(e => {
+    ipcRenderer.send("key: getTerminalKeystroke", e)
 })
