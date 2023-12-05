@@ -10,6 +10,8 @@ Code and Note is a code editor developed using Electron JS, where you can take n
 - Ace
 - Electron JS
 - Bootstrap
+- Xterm JS
+- Node PTY
 
 # How to Get Started
 
