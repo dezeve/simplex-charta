@@ -17,6 +17,7 @@
     position: absolute;
     background-color: rgb(169, 175, 179);
     width: 80px;
+    border-right: 4px solid rgb(95, 95, 216);
 }
 
 #terminal-container {
@@ -28,6 +29,7 @@
     resize: none;
     outline: none;
     overflow: scroll;
+    border-top: 4px solid rgb(95, 95, 216);
 }
 
 a:hover {
