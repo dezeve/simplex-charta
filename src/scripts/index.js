@@ -130,3 +130,7 @@ const gotoSettingsAnchor = document.querySelector("#gotoSettingsAnchor")
 gotoSettingsAnchor.addEventListener("click", () => {
     ipcRenderer.send("key: openSettings")
 })
+
+ipcRenderer.on("key: doGotoLine", (err, data) => {
+    editor.gotoLine(data)
+})

@@ -17,7 +17,7 @@
     position: absolute;
     background-color: rgb(169, 175, 179);
     width: 80px;
-    border-right: 4px solid rgb(95, 95, 216);
+    border-right: 3px solid rgb(102, 102, 229);
 }
 
 #sidebar a:last-child {
@@ -35,7 +35,7 @@
     resize: none;
     outline: none;
     overflow: scroll;
-    border-top: 4px solid rgb(95, 95, 216);
+    border-top: 3px solid rgb(102, 102, 229);
 }
 
 a:hover {

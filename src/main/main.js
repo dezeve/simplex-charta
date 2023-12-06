@@ -235,6 +235,10 @@ app.on("ready", () => {
         isAddSettingsWindowOpened = true
       })
 
+      ipcMain.on("key: gotoLine", (err, data) => {
+        mainWindow.webContents.send("key: doGotoLine", data)
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })
@@ -480,8 +484,8 @@ function newFindAndReplaceWindow() {
 
 function newGotoSelectedLineWindow() {
     addGotoSelectedLineWindow = new BrowserWindow({
-        width: 400,
-        height: 200,
+        width: 350,
+        height: 175,
         title: "Go to Selected Line",
         webPreferences: {
         nodeIntegration: true,
