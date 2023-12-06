@@ -1,9 +1,13 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
 
-let lineInput = document.querySelector("#lineInput")
-let getSelectedLineInput = document.querySelector("#getSelectedLineInput")
+const lineInput = document.querySelector("#lineInput")
+const getSelectedLineInput = document.querySelector("#getSelectedLineInput")
 
 getSelectedLineInput.addEventListener("click", () => {
-    ipcRenderer.send("key: gotoLine", lineInput.value)
+    if (!isNaN(lineInput.value - lineInput.value) && lineInput.value.trim() !== "") {
+        ipcRenderer.send("key: gotoLine", lineInput.value)
+    } else {
+        ipcRenderer.send("key: showGotoLineError")
+    }
 })

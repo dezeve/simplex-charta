@@ -239,6 +239,10 @@ app.on("ready", () => {
         mainWindow.webContents.send("key: doGotoLine", data)
       })
 
+      ipcMain.on("key: showGotoLineError", () => {
+        dialog.showErrorBox("Error", "Invalid line number!")
+      })
+
     mainWindow.on("close", () => {
         app.quit()
     })
