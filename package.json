@@ -1,13 +1,13 @@
 {
   "name": "code-and-note",
   "version": "1.0.0",
-  "description": "",
+  "description": "Code and Note is a code editor developed using Electron JS that allows you to write code as well as take notes.",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild"
   },
-  "author": "",
+  "author": "dezeve",
   "license": "MIT",
   "devDependencies": {
     "electron": "^27.0.0"

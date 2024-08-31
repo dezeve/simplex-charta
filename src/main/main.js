@@ -97,7 +97,6 @@ app.on("ready", () => {
             if(isNewTodoListOpened) {
                 todoListWindow.reload()
             }
-
           });
         } else {
           showTodoDataErrorNotification();
@@ -105,9 +104,7 @@ app.on("ready", () => {
       });
 
       ipcMain.on("key: saveFile", (event, content) => {
-
         if(!isFileExists) {
-
             dialog.showSaveDialog({
                 title: "Save File",
                 filters:
@@ -124,7 +121,6 @@ app.on("ready", () => {
               }).then((result) => {
                 
                 if (result.canceled != true) {
-                    
                   const fileExtension = path.extname(result.filePath);
       
                   switch (fileExtension) {
@@ -158,20 +154,15 @@ app.on("ready", () => {
 
                   fs.writeFileSync(result.filePath, content)
                   existingFilePath = result.filePath
-                  isFileExists = true
-                  
+                  isFileExists = true 
                 }
-
               })
-      
+
         } else {
-
             fs.writeFileSync(existingFilePath, content)
-
         }
 
       })
-      
       ipcMain.on("key: closeSettings", () => {
         addSettingsWindow.close()
         addSettingsWindow = 0
