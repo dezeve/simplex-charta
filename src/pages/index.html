@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../style/main.css">
     <title>Code and Note</title>
 </head>
+
 <body>
     <div id="sidebar" class="text-center">
         <div class="my-3 mx-2">
@@ -15,28 +17,13 @@
             <br /> <br />
             <a id="goLineAnchor" class="bi bi-arrow-right-square" style="font-size: 30px; color: black;"></a>
             <br /> <br />
-            <a class="bi bi-clipboard" style="font-size: 30px; color: black;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></a>
-            <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-                <div class="offcanvas-header">
-                    <h4 class="offcanvas-title mx-auto" id="offcanvasScrollingLabel"><b>Scrapbook Manager</b></h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div style="height: 100%;">
-                        <textarea class="offcanvasTextarea" placeholder="Scrapbook #1" spellcheck="false" style="margin-top: 0;"></textarea>
-                        <textarea class="offcanvasTextarea" placeholder="Scrapbook #2" spellcheck="false"></textarea>
-                        <textarea class="offcanvasTextarea" placeholder="Scrapbook #3" spellcheck="false"></textarea>
-                        <textarea class="offcanvasTextarea" placeholder="Scrapbook #4" spellcheck="false" style="margin-bottom: 0;"></textarea>
-                    </div>
-                </div>
-            </div>
             <a id="gotoSettingsAnchor" class="bi bi-gear" style="font-size: 40px; color: black;"></a>
         </div>
     </div>
     <div id="editor"></div>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="../../node_modules/ace-builds/src-noconflict/ace.js"></script>
     <script src="../../node_modules/ace-builds/src-noconflict/ext-language_tools.js"></script>
     <script src="../scripts/index.js"></script>
 </body>
+
 </html>
