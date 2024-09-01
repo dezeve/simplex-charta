@@ -199,11 +199,6 @@ app.on("ready", () => {
 
 const mainMenuTemplate = [
     {
-        label: "Exit",
-        accelerator: "Ctrl+Q",
-        role: "quit"
-    },
-    {
         label: "File",
         submenu: [
             {
@@ -265,12 +260,16 @@ const mainMenuTemplate = [
             {
                 label: "Close",
                 click() {
-
                     mainWindow.webContents.send("key: closeFile")
                     isFileExists = false
                     mainWindow.webContents.send("key: setTextMode")
-
-                }
+                },
+                accelerator: "Ctrl+W"
+            },
+            {
+                label: "Exit",
+                accelerator: "Ctrl+Q",
+                role: "quit"
             }
         ]
     },
@@ -320,16 +319,17 @@ const mainMenuTemplate = [
         }
     },
     {
-        label: "Dev Tools",
+        label: "Dev",
         submenu: [
             {
-                label: "Open Dev Tools",
+                label: "Dev Tools",
                 click(item, focusedWindow) {
                     focusedWindow.toggleDevTools()
-                }
+                },
+                accelerator: "Ctrl+E"
             },
             {
-                label: "Refresh",
+                label: "Reload",
                 accelerator: "Ctrl+R",
                 role: "reload"
             }
