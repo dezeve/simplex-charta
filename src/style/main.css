@@ -1,6 +1,6 @@
 #editor {
     width: calc(100% - 80px);
-    height: calc(100% - 175px);
+    height: 100%;
     position: absolute;
     top: 0;
     right: 0;
@@ -24,18 +24,6 @@
     position: absolute;
     bottom: 15px;
     left: 20px;
-}
-
-#terminal-container {
-    bottom: 0;
-    right: 0;
-    height: 175px;
-    width: calc(100% - 80px);
-    position: absolute;
-    resize: none;
-    outline: none;
-    overflow: scroll;
-    border-top: 3px solid rgb(102, 102, 229);
 }
 
 a:hover {

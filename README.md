@@ -1,19 +1,8 @@
-# About Code and Note
+# About
 
 Code and Note is a code editor developed using Electron JS that allows you to write code as well as take notes. It is available for GNU/Linux distributions and Windows operating system.
 
-## Used Technologies
-- HTML
-- CSS
-- JavaScript
-- Bootstrap Icons
-- Ace
-- Electron JS
-- Bootstrap
-- Xterm JS
-- Node PTY
-
-# How to Get Started
+# Get Started
 
 ***Node JS must be installed***
 

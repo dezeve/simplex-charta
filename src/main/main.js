@@ -1,16 +1,11 @@
 const electron = require("electron")
 const url = require("url")
-const path = require("path")
-
 const os = require("os")
-
-const pty = require("node-pty")
-
 const fs = require("fs")
 
-const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
+const path = require("path")
 
-const shell = os.platform() === "win32" ? "powershell.exe" : "bash"
+const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
 
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
@@ -33,10 +28,6 @@ let existingFilePath
 let mainWindow
 
 app.on("ready", () => {
-    console.log("Platform=\t" + process.platform)
-
-    console.log("App working")
-
     mainWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -89,7 +80,6 @@ app.on("ready", () => {
             if (err) {
               throw err;
             }
-      
             showAddTodoSuccessNotification()
             newTodoWindow.close()
             isNewAddTodoWindowOpened = false
@@ -119,7 +109,6 @@ app.on("ready", () => {
                   {name: "Text Files", extensions: ["txt"]}
               ]
               }).then((result) => {
-                
                 if (result.canceled != true) {
                   const fileExtension = path.extname(result.filePath);
       
@@ -151,24 +140,20 @@ app.on("ready", () => {
                   default:
                       mainWindow.webContents.send("key: setTextMode")
                   }
-
                   fs.writeFileSync(result.filePath, content)
                   existingFilePath = result.filePath
                   isFileExists = true 
                 }
               })
-
         } else {
             fs.writeFileSync(existingFilePath, content)
         }
-
       })
       ipcMain.on("key: closeSettings", () => {
         addSettingsWindow.close()
         addSettingsWindow = 0
         isAddSettingsWindowOpened = false
       })
-
       ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
         mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
       })
@@ -203,22 +188,6 @@ app.on("ready", () => {
       ipcMain.on("key: openGotoSelectedLine", () => {
         (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
         isGotoSelectedLineWindowOpened = true
-      })
-
-      const ptyProcess = pty.spawn(shell, [], {
-        name: "xterm",
-        cols: 80,
-        rows: 50,
-        cwd: process.env.HOME,
-        env: process.env
-      })
-
-      ptyProcess.on("data", function(data) {
-        mainWindow.webContents.send("key: getTerminalData", data)
-      })
-
-      ipcMain.on("key: getTerminalKeystroke", (e, key) => {
-        ptyProcess.write(key)
       })
 
       ipcMain.on("key: openSettings", () => {
