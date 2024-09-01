@@ -426,8 +426,8 @@ function newSettingsWindow() {
 
 function newFindAndReplaceWindow() {
     addFindAndReplaceWindow = new BrowserWindow({
-        width: 600,
-        height: 400,
+        width: 400,
+        height: 250,
         title: "Find and Replace",
         webPreferences: {
             nodeIntegration: true,
