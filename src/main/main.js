@@ -1,6 +1,5 @@
 const electron = require("electron")
 const url = require("url")
-const os = require("os")
 const fs = require("fs")
 
 const path = require("path")
@@ -10,8 +9,8 @@ const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
 
-const ADD_TODO_SUCCESS_NOTIFICATION_TITLE= "Success!"
-const ADD_TODO_SUCCESS_NOTIFICATION_BODY= "The new todo has been successfully saved"
+const ADD_TODO_SUCCESS_NOTIFICATION_TITLE = "Success!"
+const ADD_TODO_SUCCESS_NOTIFICATION_BODY = "The new todo has been successfully saved"
 
 const TODO_DATA_ERROR_NOTIFICATION_TITLE = "Error!"
 const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
@@ -68,140 +67,130 @@ app.on("ready", () => {
 
     ipcMain.on("key: saveTodo", (err, data) => {
         if (data) {
-          const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"))
-      
-          let todo = {
-            text: data
-          }
-      
-          todoData.todoItems.push(todo);
-      
-          fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), (err) => {
-            if (err) {
-              throw err;
-            }
-            showAddTodoSuccessNotification()
-            newTodoWindow.close()
-            isNewAddTodoWindowOpened = false
+            const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"))
 
-            if(isNewTodoListOpened) {
-                todoListWindow.reload()
+            let todo = {
+                text: data
             }
-          });
+
+            todoData.todoItems.push(todo);
+
+            fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), (err) => {
+                if (err) {
+                    throw err;
+                }
+                showAddTodoSuccessNotification()
+                newTodoWindow.close()
+                isNewAddTodoWindowOpened = false
+
+                if (isNewTodoListOpened) {
+                    todoListWindow.reload()
+                }
+            });
         } else {
-          showTodoDataErrorNotification();
+            showTodoDataErrorNotification();
         }
-      });
+    })
 
-      ipcMain.on("key: saveFile", (event, content) => {
-        if(!isFileExists) {
+    ipcMain.on("key: saveFile", (event, content) => {
+        if (!isFileExists) {
             dialog.showSaveDialog({
                 title: "Save File",
                 filters:
-              [
-                  {name: "JavaScript Files", extensions: ["js"] },
-                  {name: "HTML Files", extensions: ["html"]},
-                  {name: "Python Files", extensions: ["py"]},
-                  {name: "CSS Files", extensions: ["css"]},
-                  {name: "PHP Files", extensions: ["php"]},
-                  {name: "Java Files", extensions: ["java"]},
-                  {name: "JSON Files", extensions: ["json"]},
-                  {name: "Text Files", extensions: ["txt"]}
-              ]
-              }).then((result) => {
+                    [
+                        { name: "JavaScript Files", extensions: ["js"] },
+                        { name: "HTML Files", extensions: ["html"] },
+                        { name: "Python Files", extensions: ["py"] },
+                        { name: "CSS Files", extensions: ["css"] },
+                        { name: "PHP Files", extensions: ["php"] },
+                        { name: "Java Files", extensions: ["java"] },
+                        { name: "JSON Files", extensions: ["json"] },
+                        { name: "Text Files", extensions: ["txt"] }
+                    ]
+            }).then((result) => {
                 if (result.canceled != true) {
-                  const fileExtension = path.extname(result.filePath);
-      
-                  switch (fileExtension) {
-                  case ".js":
-                      mainWindow.webContents.send("key: setJavaScriptMode")
-                      break;
-                  case ".html":
-                      mainWindow.webContents.send("key: setHTMLMode")
-                      break;
-                  case ".py":
-                      mainWindow.webContents.send("key: setPythonMode")
-                      break;
-                  case ".css":
-                      mainWindow.webContents.send("key: setCSSMode")
-                      break;
-                  case ".php":
-                      mainWindow.webContents.send("key: setPHPMode")
-                      break;
-                  case ".java":
-                      mainWindow.webContents.send("key: setJavaMode")
-                      break;
-                  case ".json":
-                      mainWindow.webContents.send("key: setJSONMode")
-                      break;
-                  case ".txt":
-                      mainWindow.webContents.send("key: setTextMode")
-                      break;
-                  default:
-                      mainWindow.webContents.send("key: setTextMode")
-                  }
-                  fs.writeFileSync(result.filePath, content)
-                  existingFilePath = result.filePath
-                  isFileExists = true 
+                    const fileExtension = path.extname(result.filePath);
+
+                    switch (fileExtension) {
+                        case ".js":
+                            mainWindow.webContents.send("key: setJavaScriptMode")
+                            break;
+                        case ".html":
+                            mainWindow.webContents.send("key: setHTMLMode")
+                            break;
+                        case ".py":
+                            mainWindow.webContents.send("key: setPythonMode")
+                            break;
+                        case ".css":
+                            mainWindow.webContents.send("key: setCSSMode")
+                            break;
+                        case ".php":
+                            mainWindow.webContents.send("key: setPHPMode")
+                            break;
+                        case ".java":
+                            mainWindow.webContents.send("key: setJavaMode")
+                            break;
+                        case ".json":
+                            mainWindow.webContents.send("key: setJSONMode")
+                            break;
+                        case ".txt":
+                            mainWindow.webContents.send("key: setTextMode")
+                            break;
+                        default:
+                            mainWindow.webContents.send("key: setTextMode")
+                    }
+                    fs.writeFileSync(result.filePath, content)
+                    existingFilePath = result.filePath
+                    isFileExists = true
                 }
-              })
+            })
         } else {
             fs.writeFileSync(existingFilePath, content)
         }
-      })
-      ipcMain.on("key: closeSettings", () => {
+    })
+    ipcMain.on("key: closeSettings", () => {
         addSettingsWindow.close()
         addSettingsWindow = 0
         isAddSettingsWindowOpened = false
-      })
-      ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
+    })
+    ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
         mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
-      })
+    })
 
-      ipcMain.on("key: updateFontSize", (e, selectedFontSize) => {
+    ipcMain.on("key: updateFontSize", (e, selectedFontSize) => {
         mainWindow.webContents.send("key: updateEditorFontSize", selectedFontSize)
-      })
+    })
 
-      ipcMain.on("key: showFontSizeError", () => {
+    ipcMain.on("key: showFontSizeError", () => {
         dialog.showErrorBox("Error", "Invalid font size!")
-      })
+    })
 
-      ipcMain.on("key: openFindAndReplace", () => {
-        (!isAddFindAndReplaceWindowOpened) ? newFindAndReplaceWindow() : showWindowErrorNotification()
-        isAddFindAndReplaceWindowOpened = true
-      })
-
-      ipcMain.on("key: closeFindAndReplace",  () => {
+    ipcMain.on("key: closeFindAndReplace", () => {
         addFindAndReplaceWindow.close()
         addFindAndReplaceWindow = 0
         isAddFindAndReplaceWindowOpened = false
-      })
+    })
 
-      ipcMain.on("key: doFindAndReplace", (err, data) => {
+    ipcMain.on("key: doFindAndReplace", (err, data) => {
         mainWindow.webContents.send("key: findAndReplace", data)
-      })
+    })
 
-      ipcMain.on("key: showFindAndReplaceError", () => {
+    ipcMain.on("key: showFindAndReplaceError", () => {
         dialog.showErrorBox("Error", "Invalid find value!")
-      })
+    })
 
-      ipcMain.on("key: openGotoSelectedLine", () => {
-        (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
-        isGotoSelectedLineWindowOpened = true
-      })
-
-      ipcMain.on("key: openSettings", () => {
+    ipcMain.on("key: openSettings", () => {
         (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
         isAddSettingsWindowOpened = true
-      })
+    })
 
-      ipcMain.on("key: gotoLine", (err, data) => {
+    ipcMain.on("key: gotoLine", (err, data) => {
         mainWindow.webContents.send("key: doGotoLine", data)
-      })
+    })
 
-      ipcMain.on("key: showGotoLineError", () => {
+    ipcMain.on("key: showGotoLineError", () => {
         dialog.showErrorBox("Error", "Invalid line number!")
-      })
+    })
 
     mainWindow.on("close", () => {
         app.quit()
@@ -215,8 +204,8 @@ const mainMenuTemplate = [
         role: "quit"
     },
     {
-    label: "File Options",
-    submenu: [
+        label: "File",
+        submenu: [
             {
                 label: "Open",
                 accelerator: "Ctrl+O",
@@ -224,45 +213,44 @@ const mainMenuTemplate = [
                     dialog.showOpenDialog({
                         title: "Open File"
                     }).then((result) => {
-
-                        if(result.canceled != true) {
+                        if (result.canceled != true) {
                             const fileExtension = path.extname(result.filePaths[0]).toString()
 
-                        switch (fileExtension) {
-                            case ".js":
-                                mainWindow.webContents.send("key: setJavaScriptMode")
-                                break;
-                            case ".html":
-                                mainWindow.webContents.send("key: setHTMLMode")
-                                break;
-                            case ".py":
-                                mainWindow.webContents.send("key: setPythonMode")
-                                break;
-                            case ".css":
-                                mainWindow.webContents.send("key: setCSSMode")
-                                break;
-                            case ".php":
-                                mainWindow.webContents.send("key: setPHPMode")
-                                break;
-                            case ".java":
-                                mainWindow.webContents.send("key: setJavaMode")
-                                break;
-                            case ".json":
-                                mainWindow.webContents.send("key: setJSONMode")
-                                break;
-                            case ".txt":
-                                mainWindow.webContents.send("key: setTextMode")
-                                break;
-                            default:
-                                dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in Plain text mode.")
-                                mainWindow.webContents.send("key: setTextMode")
+                            switch (fileExtension) {
+                                case ".js":
+                                    mainWindow.webContents.send("key: setJavaScriptMode")
+                                    break;
+                                case ".html":
+                                    mainWindow.webContents.send("key: setHTMLMode")
+                                    break;
+                                case ".py":
+                                    mainWindow.webContents.send("key: setPythonMode")
+                                    break;
+                                case ".css":
+                                    mainWindow.webContents.send("key: setCSSMode")
+                                    break;
+                                case ".php":
+                                    mainWindow.webContents.send("key: setPHPMode")
+                                    break;
+                                case ".java":
+                                    mainWindow.webContents.send("key: setJavaMode")
+                                    break;
+                                case ".json":
+                                    mainWindow.webContents.send("key: setJSONMode")
+                                    break;
+                                case ".txt":
+                                    mainWindow.webContents.send("key: setTextMode")
+                                    break;
+                                default:
+                                    dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in Plain text mode.")
+                                    mainWindow.webContents.send("key: setTextMode")
                             }
 
-                        const openedFileContent = fs.readFileSync(result.filePaths[0]).toString()
-                        mainWindow.webContents.send("key: openFile", openedFileContent)
+                            const openedFileContent = fs.readFileSync(result.filePaths[0]).toString()
+                            mainWindow.webContents.send("key: openFile", openedFileContent)
 
-                        isFileExists = true
-                        existingFilePath = result.filePaths[0].toString()
+                            isFileExists = true
+                            existingFilePath = result.filePaths[0].toString()
                         }
                     })
                 }
@@ -287,7 +275,26 @@ const mainMenuTemplate = [
         ]
     },
     {
-        label: "Todo Options",
+        label: "Edit",
+        submenu: [
+            {
+                label: "Find and Replace",
+                click() {
+                    (!isAddFindAndReplaceWindowOpened) ? newFindAndReplaceWindow() : showWindowErrorNotification()
+                    isAddFindAndReplaceWindowOpened = true
+                }
+            },
+            {
+                label: "Go to Selected Line",
+                click() {
+                    (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
+                    isGotoSelectedLineWindowOpened = true
+                }
+            }
+        ]
+    },
+    {
+        label: "Todo",
         submenu: [
             {
                 label: "Open Todo List",
@@ -313,20 +320,20 @@ const mainMenuTemplate = [
         }
     },
     {
-    label: "Dev Tools",
-    submenu: [
-        {
-            label: "Open Dev Tools",
-            click(item, focusedWindow) {
-                focusedWindow.toggleDevTools()
+        label: "Dev Tools",
+        submenu: [
+            {
+                label: "Open Dev Tools",
+                click(item, focusedWindow) {
+                    focusedWindow.toggleDevTools()
+                }
+            },
+            {
+                label: "Refresh",
+                accelerator: "Ctrl+R",
+                role: "reload"
             }
-        },
-        {
-            label: "Refresh",
-            accelerator: "Ctrl+R",
-            role: "reload"
-        }
-    ]
+        ]
     }
 ]
 
@@ -336,9 +343,9 @@ function newAddTodoWindow() {
         height: 200,
         title: "New Todo",
         webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         },
         resizable: false
     })
@@ -365,9 +372,9 @@ function newTodoList() {
         height: 600,
         title: "Todo List",
         webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         },
         resizable: false
     })
@@ -394,9 +401,9 @@ function newSettingsWindow() {
         height: 625,
         title: "Settings",
         webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         },
         resizable: false
     })
@@ -423,9 +430,9 @@ function newFindAndReplaceWindow() {
         height: 400,
         title: "Find and Replace",
         webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         },
         resizable: false
     })
@@ -452,9 +459,9 @@ function newGotoSelectedLineWindow() {
         height: 175,
         title: "Go to Selected Line",
         webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         },
         resizable: false
     })

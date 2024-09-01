@@ -94,27 +94,9 @@ function getTheme() {
     return settings.theme[selectedTheme]
 }
 
-const findAndReplaceAnchor = document.querySelector("#findAndReplaceAnchor")
-
-findAndReplaceAnchor.addEventListener("click", () => {
-    ipcRenderer.send("key: openFindAndReplace")
-})
-
 ipcRenderer.on("key: findAndReplace", (err, data) => {
     editor.find(data.find)
     editor.replaceAll(data.replace)
-})
-
-const goLineAnchor = document.querySelector("#goLineAnchor")
-
-goLineAnchor.addEventListener("click", () => {
-    ipcRenderer.send("key: openGotoSelectedLine")
-})
-
-const gotoSettingsAnchor = document.querySelector("#gotoSettingsAnchor")
-
-gotoSettingsAnchor.addEventListener("click", () => {
-    ipcRenderer.send("key: openSettings")
 })
 
 ipcRenderer.on("key: doGotoLine", (err, data) => {
