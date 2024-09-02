@@ -9,14 +9,6 @@ const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
 const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
 const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
 
-const ADD_TODO_SUCCESS_NOTIFICATION_TITLE = "Success!"
-const ADD_TODO_SUCCESS_NOTIFICATION_BODY = "The new todo has been successfully saved"
-
-const TODO_DATA_ERROR_NOTIFICATION_TITLE = "Error!"
-const TODO_DATA_ERROR_NOTIFICATION_BODY = "You cannot save todo items blankly"
-
-let isNewAddTodoWindowOpened = false
-let isNewTodoListOpened = false
 let isAddSettingsWindowOpened = false
 let isAddFindAndReplaceWindowOpened = false
 let isGotoSelectedLineWindowOpened = false
@@ -47,50 +39,6 @@ app.on("ready", () => {
 
     const mainMenu = electron.Menu.buildFromTemplate(mainMenuTemplate)
     Menu.setApplicationMenu(mainMenu)
-
-    ipcMain.on("key: closeNewTodo", () => {
-        newTodoWindow.close()
-        newTodoWindow = 0
-        isNewAddTodoWindowOpened = false
-    })
-
-    ipcMain.on("key: closeTodoList", () => {
-        todoListWindow.close()
-        todoListWindow = 0
-        isNewTodoListOpened = false
-    })
-
-    ipcMain.on("key: openAddTodo", () => {
-        (!isNewAddTodoWindowOpened) ? newAddTodoWindow() : showWindowErrorNotification()
-        isNewAddTodoWindowOpened = true
-    })
-
-    ipcMain.on("key: saveTodo", (err, data) => {
-        if (data) {
-            const todoData = JSON.parse(fs.readFileSync("src/database/todoData.json"))
-
-            let todo = {
-                text: data
-            }
-
-            todoData.todoItems.push(todo);
-
-            fs.writeFile("src/database/todoData.json", JSON.stringify(todoData), (err) => {
-                if (err) {
-                    throw err;
-                }
-                showAddTodoSuccessNotification()
-                newTodoWindow.close()
-                isNewAddTodoWindowOpened = false
-
-                if (isNewTodoListOpened) {
-                    todoListWindow.reload()
-                }
-            });
-        } else {
-            showTodoDataErrorNotification();
-        }
-    })
 
     ipcMain.on("key: saveFile", (event, content) => {
         if (!isFileExists) {
@@ -148,11 +96,13 @@ app.on("ready", () => {
             fs.writeFileSync(existingFilePath, content)
         }
     })
+
     ipcMain.on("key: closeSettings", () => {
         addSettingsWindow.close()
         addSettingsWindow = 0
         isAddSettingsWindowOpened = false
     })
+
     ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
         mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
     })
@@ -293,25 +243,6 @@ const mainMenuTemplate = [
         ]
     },
     {
-        label: "Todo",
-        submenu: [
-            {
-                label: "Open Todo List",
-                click() {
-                    (!isNewTodoListOpened) ? newTodoList() : showWindowErrorNotification()
-                    isNewTodoListOpened = true
-                }
-            },
-            {
-                label: "Add New Todo",
-                click() {
-                    (!isNewAddTodoWindowOpened) ? newAddTodoWindow() : showWindowErrorNotification()
-                    isNewAddTodoWindowOpened = true
-                }
-            }
-        ]
-    },
-    {
         label: "Settings",
         click() {
             (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
@@ -336,64 +267,6 @@ const mainMenuTemplate = [
         ]
     }
 ]
-
-function newAddTodoWindow() {
-    newTodoWindow = new BrowserWindow({
-        width: 500,
-        height: 200,
-        title: "New Todo",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    newTodoWindow.setMenu(null)
-
-    newTodoWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/newTodo.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    newTodoWindow.on("close", () => {
-        newTodoWindow = null
-        isNewAddTodoWindowOpened = false
-    })
-}
-
-function newTodoList() {
-    todoListWindow = new BrowserWindow({
-        width: 600,
-        height: 600,
-        title: "Todo List",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    todoListWindow.setMenu(null)
-
-    todoListWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/todoList.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    todoListWindow.on("close", () => {
-        todoListWindow = null
-        isNewTodoListOpened = false
-    })
-}
 
 function newSettingsWindow() {
     addSettingsWindow = new BrowserWindow({
@@ -486,19 +359,5 @@ function showWindowErrorNotification() {
     new Notification({
         title: NEW_WINDOW_NOTIFICATION_TITLE,
         body: NEW_WINDOW_NOTIFICATION_BODY
-    }).show()
-}
-
-function showAddTodoSuccessNotification() {
-    new Notification({
-        title: ADD_TODO_SUCCESS_NOTIFICATION_TITLE,
-        body: ADD_TODO_SUCCESS_NOTIFICATION_BODY
-    }).show()
-}
-
-function showTodoDataErrorNotification() {
-    new Notification({
-        title: TODO_DATA_ERROR_NOTIFICATION_TITLE,
-        body: TODO_DATA_ERROR_NOTIFICATION_BODY
     }).show()
 }
