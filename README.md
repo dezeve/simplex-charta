@@ -1,8 +1,8 @@
-## About
+# About
 
-simplex-charta is a text editor made with Electron JS.. It is available for GNU/Linux distributions and Windows operating system.
+simplex-charta is a text editor made with Electron JS. It is available for GNU/Linux distributions and Windows operating system.
 
-## Get Started
+# Get Started
 
 ***Node JS must be installed***
 
