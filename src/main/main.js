@@ -97,12 +97,6 @@ app.on("ready", () => {
         }
     })
 
-    ipcMain.on("key: closeSettings", () => {
-        addSettingsWindow.close()
-        addSettingsWindow = 0
-        isAddSettingsWindowOpened = false
-    })
-
     ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
         mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
     })
@@ -270,8 +264,8 @@ const mainMenuTemplate = [
 
 function newSettingsWindow() {
     addSettingsWindow = new BrowserWindow({
-        width: 600,
-        height: 625,
+        width: 450,
+        height: 300,
         title: "Settings",
         webPreferences: {
             nodeIntegration: true,

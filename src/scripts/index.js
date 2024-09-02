@@ -48,20 +48,20 @@ ipcRenderer.on("key: setTextMode", () => {
 })
 
 ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
-    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
     settings.selectedTheme = selectedUpdateTheme
     const updatedSettings = JSON.stringify(settings, null, 2)
-    fs.writeFileSync("src/database/settings.json", updatedSettings)
+    fs.writeFileSync("src/config/config.json", updatedSettings)
 
     const theme = settings.theme[selectedUpdateTheme];
     editor.setTheme(theme)
 })
 
 ipcRenderer.on("key: updateEditorFontSize", (event, selectedFontSize) => {
-    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
     settings.fontSize = selectedFontSize + "px"
     const updatedSettings = JSON.stringify(settings, null, 2)
-    fs.writeFileSync("src/database/settings.json", updatedSettings)
+    fs.writeFileSync("src/config/config.json", updatedSettings)
 
     const fontSize = settings.fontSize
     editor.setFontSize(fontSize)
@@ -84,12 +84,12 @@ editor.setOptions({
 })
 
 function getFontSize() {
-    const fontSize = JSON.parse(fs.readFileSync("src/database/settings.json")).fontSize
+    const fontSize = JSON.parse(fs.readFileSync("src/config/config.json")).fontSize
     return fontSize
 }
 
 function getTheme() {
-    const settings = JSON.parse(fs.readFileSync("src/database/settings.json"))
+    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
     selectedTheme = settings.selectedTheme
     return settings.theme[selectedTheme]
 }

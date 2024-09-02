@@ -9,91 +9,105 @@
     <title>Settings</title>
 </head>
 
-<body>
-    <div class="container text-center mt-3 mb-5 p-3 border rounded">
-
+<body style="background-color: #fefefe;">
+    <div class="container mt-3">
         <h1>Settings</h1>
-        <hr class="my-3" />
-        <h2 class="text-start mb-5 ml-2">Change Font Size</h2>
-        <div class="row justify-content-start">
-            <div class="col-sm-4">
-                <p style="width: 150px; margin-top: 5px;">
-                    <b>
-                        Select Font Size:
-                    </b>
-                </p>
+
+        <hr class="mt-2 mb-3" />
+
+        <div class="d-flex gap-2 border rounded p-4"
+            style="background-color: #fafafa;">
+            <div class="col-auto my-auto">
+                <span class="h5 fw-bold">Font Size:</span>
             </div>
-            <div class="col-sm-2">
+            <div class="col-auto">
                 <input id="fontSizeInput" type="number" class="form-control"
-                    min="1" max="99">
+                    min="5" max="75">
             </div>
-            <br />
-            <div>
+            <div class="col-auto">
                 <button id="saveFontSizeButton"
-                    class="btn btn-success float-start ml-2 mt-3 w-25">Save</button>
+                    class="btn btn-success">Save</button>
             </div>
         </div>
-        <hr class="my-3" />
-        <h2 class="text-start mb-4 mt-2 ml-2">Change Theme</h2>
-        <div class="dropdown text-start">
-            <button class="btn btn-primary dropdown-toggle" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Select Theme
-            </button>
 
-            <ul class="dropdown-menu"
-                style="max-height: 200px; overflow-y: scroll;">
-                <div class="dropdown-divider"></div>
-                <li class="text-center"><b>Light Themes</b></li>
-                <div class="dropdown-divider"></div>
-                <li><a class="dropdown-item">dawn</a></li>
-                <li><a class="dropdown-item">iplastic</a></li>
-                <li><a class="dropdown-item">crimson_editor</a></li>
-                <li><a class="dropdown-item">eclipse</a></li>
-                <li><a class="dropdown-item">chrome</a></li>
-                <li><a class="dropdown-item">clouds</a></li>
-                <li><a class="dropdown-item">dreamweaver</a></li>
-                <li><a class="dropdown-item">github</a></li>
-                <li><a class="dropdown-item">katzenmilch</a></li>
-                <li><a class="dropdown-item">kuroir</a></li>
-                <li><a class="dropdown-item">solarized_light</a></li>
-                <li><a class="dropdown-item">sqlserver</a></li>
-                <li><a class="dropdown-item">textmate</a></li>
-                <li><a class="dropdown-item">tomorrow</a></li>
-                <li><a class="dropdown-item">xcode</a></li>
-                <div class="dropdown-divider"></div>
-                <li class="text-center"><b>Dark Themes</b></li>
-                <div class="dropdown-divider"></div>
-                <li><a class="dropdown-item">ambiance</a></li>
-                <li><a class="dropdown-item">chaos</a></li>
-                <li><a class="dropdown-item">clouds_midnight</a></li>
-                <li><a class="dropdown-item">cobalt</a></li>
-                <li><a class="dropdown-item">dracula</a></li>
-                <li><a class="dropdown-item">gob</a></li>
-                <li><a class="dropdown-item">gruvbox</a></li>
-                <li><a class="dropdown-item">idle_fingers</a></li>
-                <li><a class="dropdown-item">kr_theme</a></li>
-                <li><a class="dropdown-item">merbivore</a></li>
-                <li><a class="dropdown-item">merbivore_soft</a></li>
-                <li><a class="dropdown-item">mono_industrial</a></li>
-                <li><a class="dropdown-item">monokai</a></li>
-                <li><a class="dropdown-item">pastel_on_dark</a></li>
-                <li><a class="dropdown-item">solarized_dark</a></li>
-                <li><a class="dropdown-item">terminal</a></li>
-                <li><a class="dropdown-item">tomorrow_night</a></li>
-                <li><a class="dropdown-item">tomorrow_night_blue</a></li>
-                <li><a class="dropdown-item">tomorrow_night_bright</a></li>
-                <li><a class="dropdown-item">tomorrow_night_eighties</a></li>
-                <li><a class="dropdown-item">twilight</a></li>
-                <li><a class="dropdown-item">vibrant_ink</a></li>
-            </ul>
+        <div class="d-flex gap-2 mt-2 border rounded p-4"
+            style="background-color: #fafafa;">
+            <div class="col-auto my-auto">
+                <span class="h5 fw-bold">Change Theme:</span>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group dropup" role="group">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Select Theme
+                        </button>
+
+                        <ul class="dropdown-menu"
+                            style="max-height: 175px; overflow-y: scroll;">
+                            <div class="dropdown-divider"></div>
+                            <li class="text-center"><b>Light Themes</b></li>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item">dawn</a></li>
+                            <li><a class="dropdown-item">iplastic</a></li>
+                            <li><a class="dropdown-item">crimson_editor</a>
+                            </li>
+                            <li><a class="dropdown-item">eclipse</a></li>
+                            <li><a class="dropdown-item">chrome</a></li>
+                            <li><a class="dropdown-item">clouds</a></li>
+                            <li><a class="dropdown-item">dreamweaver</a></li>
+                            <li><a class="dropdown-item">github</a></li>
+                            <li><a class="dropdown-item">katzenmilch</a></li>
+                            <li><a class="dropdown-item">kuroir</a></li>
+                            <li><a class="dropdown-item">solarized_light</a>
+                            </li>
+                            <li><a class="dropdown-item">sqlserver</a></li>
+                            <li><a class="dropdown-item">textmate</a></li>
+                            <li><a class="dropdown-item">tomorrow</a></li>
+                            <li><a class="dropdown-item">xcode</a></li>
+                            <div class="dropdown-divider"></div>
+                            <li class="text-center"><b>Dark Themes</b></li>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item">ambiance</a></li>
+                            <li><a class="dropdown-item">chaos</a></li>
+                            <li><a class="dropdown-item">clouds_midnight</a>
+                            </li>
+                            <li><a class="dropdown-item">cobalt</a></li>
+                            <li><a class="dropdown-item">dracula</a></li>
+                            <li><a class="dropdown-item">gob</a></li>
+                            <li><a class="dropdown-item">gruvbox</a></li>
+                            <li><a class="dropdown-item">idle_fingers</a></li>
+                            <li><a class="dropdown-item">kr_theme</a></li>
+                            <li><a class="dropdown-item">merbivore</a></li>
+                            <li><a class="dropdown-item">merbivore_soft</a>
+                            </li>
+                            <li><a class="dropdown-item">mono_industrial</a>
+                            </li>
+                            <li><a class="dropdown-item">monokai</a></li>
+                            <li><a class="dropdown-item">pastel_on_dark</a>
+                            </li>
+                            <li><a class="dropdown-item">solarized_dark</a>
+                            </li>
+                            <li><a class="dropdown-item">terminal</a></li>
+                            <li><a class="dropdown-item">tomorrow_night</a>
+                            </li>
+                            <li><a
+                                    class="dropdown-item">tomorrow_night_blue</a>
+                            </li>
+                            <li><a
+                                    class="dropdown-item">tomorrow_night_bright</a>
+                            </li>
+                            <li><a
+                                    class="dropdown-item">tomorrow_night_eighties</a>
+                            </li>
+                            <li><a class="dropdown-item">twilight</a></li>
+                            <li><a class="dropdown-item">vibrant_ink</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <hr class="my-3" />
-
-        <button class="btn btn-secondary mt-5"
-            id="closeSettingsButton">Close</button>
-
     </div>
 
     <script
