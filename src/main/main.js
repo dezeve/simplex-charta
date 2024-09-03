@@ -4,10 +4,7 @@ const fs = require("fs")
 
 const path = require("path")
 
-const { app, BrowserWindow, Menu, ipcMain, Notification, dialog } = electron
-
-const NEW_WINDOW_NOTIFICATION_TITLE = "Error!"
-const NEW_WINDOW_NOTIFICATION_BODY = "This window already opened"
+const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 
 let isAddSettingsWindowOpened = false
 let isAddFindAndReplaceWindowOpened = false
@@ -123,11 +120,6 @@ app.on("ready", () => {
         dialog.showErrorBox("Error", "Invalid find value!")
     })
 
-    ipcMain.on("key: openSettings", () => {
-        (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
-        isAddSettingsWindowOpened = true
-    })
-
     ipcMain.on("key: gotoLine", (err, data) => {
         mainWindow.webContents.send("key: doGotoLine", data)
     })
@@ -152,10 +144,10 @@ const mainMenuTemplate = [
                     dialog.showSaveDialog({
                         title: "New File",
                         filters: [
-                            {name: "All Files", extensions: ["*"]}
+                            { name: "All Files", extensions: ["*"] }
                         ]
                     }).then(result => {
-                        if(!result.canceled) {
+                        if (!result.canceled) {
                             const filePath = result.filePath
                             fs.writeFileSync(filePath, "")
 
@@ -195,7 +187,6 @@ const mainMenuTemplate = [
                             existingFilePath = result.filePath
                         }
                     })
-                    
                 }
             },
             {
@@ -276,14 +267,24 @@ const mainMenuTemplate = [
             {
                 label: "Find and Replace",
                 click() {
-                    (!isAddFindAndReplaceWindowOpened) ? newFindAndReplaceWindow() : showWindowErrorNotification()
+                    if (isAddFindAndReplaceWindowOpened) {
+                        dialog.showErrorBox("Error", "This window already opened!")
+                    } else {
+                        newFindAndReplaceWindow()
+                    }
+
                     isAddFindAndReplaceWindowOpened = true
                 }
             },
             {
                 label: "Go to Selected Line",
                 click() {
-                    (!isGotoSelectedLineWindowOpened) ? newGotoSelectedLineWindow() : showWindowErrorNotification()
+                    if (isGotoSelectedLineWindowOpened) {
+                        dialog.showErrorBox("Error", "This window already opened!")
+                    } else {
+                        newGotoSelectedLineWindow()
+                    }
+
                     isGotoSelectedLineWindowOpened = true
                 }
             }
@@ -292,7 +293,12 @@ const mainMenuTemplate = [
     {
         label: "Settings",
         click() {
-            (!isAddSettingsWindowOpened) ? newSettingsWindow() : showWindowErrorNotification()
+            if (isAddSettingsWindowOpened) {
+                dialog.showErrorBox("Error", "This window already opened!")
+            } else {
+                newSettingsWindow()
+            }
+
             isAddSettingsWindowOpened = true
         }
     },
@@ -400,11 +406,4 @@ function newGotoSelectedLineWindow() {
         addGotoSelectedLineWindow = null
         isGotoSelectedLineWindowOpened = false
     })
-}
-
-function showWindowErrorNotification() {
-    new Notification({
-        title: NEW_WINDOW_NOTIFICATION_TITLE,
-        body: NEW_WINDOW_NOTIFICATION_BODY
-    }).show()
 }
