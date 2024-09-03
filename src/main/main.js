@@ -6,8 +6,8 @@ const path = require("path")
 
 const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 
-let isAddSettingsWindowOpened = false
-let isAddFindAndReplaceWindowOpened = false
+let isSettingsWindowOpened = false
+let isFindAndReplaceWindowOpened = false
 let isGotoSelectedLineWindowOpened = false
 
 let isFileExists = false
@@ -107,9 +107,9 @@ app.on("ready", () => {
     })
 
     ipcMain.on("key: closeFindAndReplace", () => {
-        addFindAndReplaceWindow.close()
-        addFindAndReplaceWindow = 0
-        isAddFindAndReplaceWindowOpened = false
+        findAndReplaceWindow.close()
+        findAndReplaceWindow = 0
+        isFindAndReplaceWindowOpened = false
     })
 
     ipcMain.on("key: doFindAndReplace", (err, data) => {
@@ -249,8 +249,9 @@ const mainMenuTemplate = [
                 label: "Close",
                 click() {
                     mainWindow.webContents.send("key: closeFile")
-                    isFileExists = false
                     mainWindow.webContents.send("key: setTextMode")
+
+                    isFileExists = false
                 },
                 accelerator: "Ctrl+W"
             },
@@ -267,13 +268,13 @@ const mainMenuTemplate = [
             {
                 label: "Find and Replace",
                 click() {
-                    if (isAddFindAndReplaceWindowOpened) {
+                    if (isFindAndReplaceWindowOpened) {
                         dialog.showErrorBox("Error", "This window already opened!")
                     } else {
                         newFindAndReplaceWindow()
                     }
 
-                    isAddFindAndReplaceWindowOpened = true
+                    isFindAndReplaceWindowOpened = true
                 }
             },
             {
@@ -293,13 +294,13 @@ const mainMenuTemplate = [
     {
         label: "Settings",
         click() {
-            if (isAddSettingsWindowOpened) {
+            if (isSettingsWindowOpened) {
                 dialog.showErrorBox("Error", "This window already opened!")
             } else {
                 newSettingsWindow()
             }
 
-            isAddSettingsWindowOpened = true
+            isSettingsWindowOpened = true
         }
     },
     {
@@ -322,7 +323,7 @@ const mainMenuTemplate = [
 ]
 
 function newSettingsWindow() {
-    addSettingsWindow = new BrowserWindow({
+    settingsWindow = new BrowserWindow({
         width: 450,
         height: 300,
         title: "Settings",
@@ -334,9 +335,9 @@ function newSettingsWindow() {
         resizable: false
     })
 
-    addSettingsWindow.setMenu(null)
+    settingsWindow.setMenu(null)
 
-    addSettingsWindow.loadURL(
+    settingsWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/settings.html"),
             protocol: "file:",
@@ -344,14 +345,14 @@ function newSettingsWindow() {
         })
     )
 
-    addSettingsWindow.on("close", () => {
-        addSettingsWindow = null
-        isAddSettingsWindowOpened = false
+    settingsWindow.on("close", () => {
+        settingsWindow = null
+        isSettingsWindowOpened = false
     })
 }
 
 function newFindAndReplaceWindow() {
-    addFindAndReplaceWindow = new BrowserWindow({
+    findAndReplaceWindow = new BrowserWindow({
         width: 400,
         height: 250,
         title: "Find and Replace",
@@ -363,9 +364,9 @@ function newFindAndReplaceWindow() {
         resizable: false
     })
 
-    addFindAndReplaceWindow.setMenu(null)
+    findAndReplaceWindow.setMenu(null)
 
-    addFindAndReplaceWindow.loadURL(
+    findAndReplaceWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/findAndReplace.html"),
             protocol: "file:",
@@ -373,16 +374,16 @@ function newFindAndReplaceWindow() {
         })
     )
 
-    addFindAndReplaceWindow.on("close", () => {
-        addFindAndReplaceWindow = null
-        isAddFindAndReplaceWindowOpened = false
+    findAndReplaceWindow.on("close", () => {
+        findAndReplaceWindow = null
+        isFindAndReplaceWindowOpened = false
     })
 }
 
 function newGotoSelectedLineWindow() {
-    addGotoSelectedLineWindow = new BrowserWindow({
+    gotoSelectedLineWindow = new BrowserWindow({
         width: 350,
-        height: 175,
+        height: 165,
         title: "Go to Selected Line",
         webPreferences: {
             nodeIntegration: true,
@@ -392,9 +393,9 @@ function newGotoSelectedLineWindow() {
         resizable: false
     })
 
-    addGotoSelectedLineWindow.setMenu(null)
+    gotoSelectedLineWindow.setMenu(null)
 
-    addGotoSelectedLineWindow.loadURL(
+    gotoSelectedLineWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "../pages/gotoSelectedLine.html"),
             protocol: "file:",
@@ -402,8 +403,8 @@ function newGotoSelectedLineWindow() {
         })
     )
 
-    addGotoSelectedLineWindow.on("close", () => {
-        addGotoSelectedLineWindow = null
+    gotoSelectedLineWindow.on("close", () => {
+        gotoSelectedLineWindow = null
         isGotoSelectedLineWindowOpened = false
     })
 }
