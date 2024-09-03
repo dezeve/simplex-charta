@@ -57,7 +57,7 @@ app.on("ready", () => {
                     ]
             }).then((result) => {
                 if (result.canceled != true) {
-                    const fileExtension = path.extname(result.filePath);
+                    const fileExtension = path.extname(result.filePath)
 
                     switch (fileExtension) {
                         case ".js":
@@ -145,6 +145,59 @@ const mainMenuTemplate = [
     {
         label: "File",
         submenu: [
+            {
+                label: "New",
+                accelerator: "Ctrl+N",
+                click() {
+                    dialog.showSaveDialog({
+                        title: "New File",
+                        filters: [
+                            {name: "All Files", extensions: ["*"]}
+                        ]
+                    }).then(result => {
+                        if(!result.canceled) {
+                            const filePath = result.filePath
+                            fs.writeFileSync(filePath, "")
+
+                            const fileExtension = path.extname(result.filePath)
+
+                            switch (fileExtension) {
+                                case ".js":
+                                    mainWindow.webContents.send("key: setJavaScriptMode")
+                                    break;
+                                case ".html":
+                                    mainWindow.webContents.send("key: setHTMLMode")
+                                    break;
+                                case ".py":
+                                    mainWindow.webContents.send("key: setPythonMode")
+                                    break;
+                                case ".css":
+                                    mainWindow.webContents.send("key: setCSSMode")
+                                    break;
+                                case ".php":
+                                    mainWindow.webContents.send("key: setPHPMode")
+                                    break;
+                                case ".java":
+                                    mainWindow.webContents.send("key: setJavaMode")
+                                    break;
+                                case ".json":
+                                    mainWindow.webContents.send("key: setJSONMode")
+                                    break;
+                                case ".txt":
+                                    mainWindow.webContents.send("key: setTextMode")
+                                    break;
+                                default:
+                                    dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in Plain text mode.")
+                                    mainWindow.webContents.send("key: setTextMode")
+                            }
+
+                            isFileExists = true
+                            existingFilePath = result.filePath
+                        }
+                    })
+                    
+                }
+            },
             {
                 label: "Open",
                 accelerator: "Ctrl+O",
