@@ -6,6 +6,8 @@ const path = require("path")
 
 const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 
+const isDarwin = process.platform === "darwin"
+
 let isSettingsWindowOpened = false
 let isFindAndReplaceWindowOpened = false
 let isGotoSelectedLineWindowOpened = false
@@ -134,26 +136,35 @@ app.on("ready", () => {
 })
 
 const mainMenuTemplate = [
+    ...(isDarwin
+        ? [{
+            label: app.name,
+            submenu: [
+                { role: 'quit' }
+            ]
+        }]
+        :
+        []),
     {
         label: "File",
         submenu: [
             {
                 label: "New",
-                accelerator: "Ctrl+N",
+                accelerator: isDarwin ? "Cmd+N" : "Ctrl+N",
                 click() {
                     openNewFile()
                 }
             },
             {
                 label: "Open",
-                accelerator: "Ctrl+O",
+                accelerator: isDarwin ? "Cmd+O" : "Ctrl+O",
                 click() {
                     openFile()
                 }
             },
             {
                 label: "Save",
-                accelerator: "Ctrl+S",
+                accelerator: isDarwin ? "Cmd+S" : "Ctrl+S",
                 click() {
                     mainWindow.webContents.send("key: saveFile")
                 }
@@ -166,13 +177,17 @@ const mainMenuTemplate = [
 
                     isFileExists = false
                 },
-                accelerator: "Ctrl+W"
+                accelerator: isDarwin ? "Cmd+W" : "Ctrl+W"
             },
-            {
-                label: "Exit",
-                accelerator: "Ctrl+Q",
-                role: "quit"
-            }
+            ...(isDarwin
+                ? []
+                :
+                [{
+                    label: "Exit",
+                    accelerator: isDarwin ? "Cmd+Q" : "Ctrl+Q",
+                    role: "quit"
+                }]
+            )
         ]
     },
     {
@@ -204,18 +219,40 @@ const mainMenuTemplate = [
             }
         ]
     },
-    {
-        label: "Settings",
-        click() {
-            if (isSettingsWindowOpened) {
-                dialog.showErrorBox("Error", "This window already opened!")
-            } else {
-                newSettingsWindow()
-            }
+    ...(isDarwin
+        ? [{
+            label: "Settings",
+            submenu: [
+                {
+                    label: "Open Settings",
+                    click() {
+                        if (isSettingsWindowOpened) {
+                            dialog.showErrorBox("Error", "This window already opened!")
+                        } else {
+                            newSettingsWindow()
+                        }
+        
+                        isSettingsWindowOpened = true
+                    },
+                    accelerator: "Cmd+D"
+                }
+            ]
+        }]
+        :
+        [{
+            label: "Settings",
+            click() {
+                if (isSettingsWindowOpened) {
+                    dialog.showErrorBox("Error", "This window already opened!")
+                } else {
+                    newSettingsWindow()
+                }
 
-            isSettingsWindowOpened = true
-        }
-    },
+                isSettingsWindowOpened = true
+            },
+            accelerator: "Ctrl+D"
+        }]
+    ),
     {
         label: "Dev",
         submenu: [
@@ -224,22 +261,16 @@ const mainMenuTemplate = [
                 click(item, focusedWindow) {
                     focusedWindow.toggleDevTools()
                 },
-                accelerator: "Ctrl+E"
+                accelerator: isDarwin ? "Cmd+E" : "Ctrl+E"
             },
             {
                 label: "Reload",
-                accelerator: "Ctrl+R",
+                accelerator: isDarwin ? "Cmd+R" : "Ctrl+R",
                 role: "reload"
             }
         ]
     }
 ]
-
-if(process.platform == "darwin") {
-    mainMenuTemplate.unshift({
-        label: app.getName()
-    })
-}
 
 function newSettingsWindow() {
     settingsWindow = new BrowserWindow({

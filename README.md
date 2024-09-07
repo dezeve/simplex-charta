@@ -1,6 +1,6 @@
 # About
 
-simplex-charta is a code editor made with Electron JS. It is available for GNU/Linux distributions and Windows operating system.
+simplex-charta is a code editor made with Electron JS. It is available for GNU/Linux distributions, macOS and Windows operating system.
 
 # Get Started
 
