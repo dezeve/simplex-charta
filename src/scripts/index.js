@@ -2,6 +2,20 @@ const electron = require("electron")
 const { ipcRenderer } = electron
 const fs = require("fs")
 
+ace.require("ace/ext/language_tools")
+
+const editor = ace.edit("editor")
+const fontSize = getFontSize()
+const theme = getTheme()
+
+editor.setTheme(theme)
+editor.session.setMode("ace/mode/text")
+editor.setFontSize(fontSize)
+
+editor.setOptions({
+    enableLiveAutocompletion: true
+})
+
 ipcRenderer.on("key: openFile", (event, openedFileContent) => {
     editor.setValue(openedFileContent)
 })
@@ -47,6 +61,14 @@ ipcRenderer.on("key: setTextMode", () => {
     editor.session.setMode("ace/mode/text")
 })
 
+ipcRenderer.on("key: doSearchAndReplace", () => {
+    editor.execCommand("find")
+})
+
+ipcRenderer.on("key: doGotoLine", (err, data) => {
+    editor.gotoLine(data)
+})
+
 ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
     const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
     settings.selectedTheme = selectedUpdateTheme
@@ -67,22 +89,6 @@ ipcRenderer.on("key: updateEditorFontSize", (event, selectedFontSize) => {
     editor.setFontSize(fontSize)
 })
 
-ace.require("ace/ext/language_tools")
-
-const editor = ace.edit("editor")
-
-const fontSize = getFontSize()
-
-const theme = getTheme()
-
-editor.setTheme(theme)
-editor.session.setMode("ace/mode/text")
-editor.setFontSize(fontSize)
-
-editor.setOptions({
-    enableLiveAutocompletion: true
-})
-
 function getFontSize() {
     const fontSize = JSON.parse(fs.readFileSync("src/config/config.json")).fontSize
     return fontSize
@@ -93,12 +99,3 @@ function getTheme() {
     selectedTheme = settings.selectedTheme
     return settings.theme[selectedTheme]
 }
-
-ipcRenderer.on("key: findAndReplace", (err, data) => {
-    editor.find(data.find)
-    editor.replaceAll(data.replace)
-})
-
-ipcRenderer.on("key: doGotoLine", (err, data) => {
-    editor.gotoLine(data)
-})

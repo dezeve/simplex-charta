@@ -4,11 +4,11 @@ const { ipcRenderer } = electron
 const saveFontSizeButton = document.querySelector("#saveFontSizeButton")
 const fontSizeInput = document.querySelector("#fontSizeInput")
 
-const themeList = document.querySelectorAll(".dropdown-item");
+const themeList = document.querySelectorAll(".dropdown-item")
 
 themeList.forEach((theme) => {
   theme.addEventListener("click", (event) => {
-    const selectedTheme = event.target.textContent;
+    const selectedTheme = event.target.textContent
     ipcRenderer.send("key: updateEditorTheme", selectedTheme)
   })
 })

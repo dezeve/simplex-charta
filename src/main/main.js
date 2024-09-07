@@ -9,7 +9,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 const isDarwin = process.platform === "darwin"
 
 let isSettingsWindowOpened = false
-let isFindAndReplaceWindowOpened = false
 let isGotoSelectedLineWindowOpened = false
 
 let isFileExists = false
@@ -108,20 +107,6 @@ app.on("ready", () => {
         dialog.showErrorBox("Error", "Invalid font size!")
     })
 
-    ipcMain.on("key: closeFindAndReplace", () => {
-        findAndReplaceWindow.close()
-        findAndReplaceWindow = 0
-        isFindAndReplaceWindowOpened = false
-    })
-
-    ipcMain.on("key: doFindAndReplace", (err, data) => {
-        mainWindow.webContents.send("key: findAndReplace", data)
-    })
-
-    ipcMain.on("key: showFindAndReplaceError", () => {
-        dialog.showErrorBox("Error", "Invalid find value!")
-    })
-
     ipcMain.on("key: gotoLine", (err, data) => {
         mainWindow.webContents.send("key: doGotoLine", data)
     })
@@ -194,16 +179,11 @@ const mainMenuTemplate = [
         label: "Edit",
         submenu: [
             {
-                label: "Find and Replace",
+                label: "Search and Replace",
                 click() {
-                    if (isFindAndReplaceWindowOpened) {
-                        dialog.showErrorBox("Error", "This window already opened!")
-                    } else {
-                        openFindAndReplaceWindow()
-                    }
-
-                    isFindAndReplaceWindowOpened = true
-                }
+                    mainWindow.webContents.send("key: doSearchAndReplace")
+                },
+                accelerator: isDarwin ? "Cmd+F" : "Ctrl+F"
             },
             {
                 label: "Go to Selected Line",
@@ -282,35 +262,6 @@ function newSettingsWindow() {
     settingsWindow.on("close", () => {
         settingsWindow = null
         isSettingsWindowOpened = false
-    })
-}
-
-function openFindAndReplaceWindow() {
-    findAndReplaceWindow = new BrowserWindow({
-        width: 400,
-        height: 250,
-        title: "Find and Replace",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    findAndReplaceWindow.setMenu(null)
-
-    findAndReplaceWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/findAndReplace.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    findAndReplaceWindow.on("close", () => {
-        findAndReplaceWindow = null
-        isFindAndReplaceWindowOpened = false
     })
 }
 
