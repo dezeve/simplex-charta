@@ -219,40 +219,24 @@ const mainMenuTemplate = [
             }
         ]
     },
-    ...(isDarwin
-        ? [{
-            label: "Settings",
-            submenu: [
-                {
-                    label: "Open Settings",
-                    click() {
-                        if (isSettingsWindowOpened) {
-                            dialog.showErrorBox("Error", "This window already opened!")
-                        } else {
-                            newSettingsWindow()
-                        }
-        
-                        isSettingsWindowOpened = true
-                    },
-                    accelerator: "Cmd+D"
-                }
-            ]
-        }]
-        :
-        [{
-            label: "Settings",
-            click() {
-                if (isSettingsWindowOpened) {
-                    dialog.showErrorBox("Error", "This window already opened!")
-                } else {
-                    newSettingsWindow()
-                }
-
-                isSettingsWindowOpened = true
-            },
-            accelerator: "Ctrl+D"
-        }]
-    ),
+    {
+        label: "Settings",
+        submenu: [
+            {
+                label: "Open Settings",
+                click() {
+                    if (isSettingsWindowOpened) {
+                        dialog.showErrorBox("Error", "This window already opened!")
+                    } else {
+                        newSettingsWindow()
+                    }
+    
+                    isSettingsWindowOpened = true
+                },
+                accelerator: isDarwin ? "Cmd+T" : "Ctrl+T"
+            }
+        ]
+    },
     {
         label: "Dev",
         submenu: [
