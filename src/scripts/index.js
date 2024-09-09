@@ -8,6 +8,11 @@ const editor = ace.edit("editor")
 const fontSize = getFontSize()
 const theme = getTheme()
 
+const gotoLineOffcanvas = document.getElementById("gotoLineOffcanvas")
+const offcanvas = new bootstrap.Offcanvas(gotoLineOffcanvas)
+const gotoLineInput = document.getElementById("gotoLineInput")
+const gotoLineButton = document.getElementById("gotoLineButton")
+
 editor.setTheme(theme)
 editor.session.setMode("ace/mode/text")
 editor.setFontSize(fontSize)
@@ -65,8 +70,8 @@ ipcRenderer.on("key: doSearchAndReplace", () => {
     editor.execCommand("find")
 })
 
-ipcRenderer.on("key: doGotoLine", (err, data) => {
-    editor.gotoLine(data)
+ipcRenderer.on("key: gotoLine", () => {
+    offcanvas.show()
 })
 
 ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
@@ -87,6 +92,12 @@ ipcRenderer.on("key: updateEditorFontSize", (event, selectedFontSize) => {
 
     const fontSize = settings.fontSize
     editor.setFontSize(fontSize)
+})
+
+gotoLineButton.addEventListener("click", () => {
+    if (!isNaN(gotoLineInput.value - gotoLineInput.value) && gotoLineInput.value.trim() !== "") {
+        editor.gotoLine(gotoLineInput.value)
+    }
 })
 
 function getFontSize() {

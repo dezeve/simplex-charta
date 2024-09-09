@@ -9,7 +9,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 const isDarwin = process.platform === "darwin"
 
 let isSettingsWindowOpened = false
-let isGotoSelectedLineWindowOpened = false
 
 let isFileExists = false
 let existingFilePath
@@ -42,15 +41,13 @@ app.on("ready", () => {
         if (!isFileExists) {
             dialog.showSaveDialog({
                 title: "Save File",
-                filters: [
-                    { name: "All Files", extensions: ["*"] }
-                ]
+                filters: getFilters()
             }).then((result) => {
-                if (result.canceled != true) {
+                if (!result.canceled) {
                     const fileExtension = path.extname(result.filePath)
 
                     handleFileExtension(fileExtension)
-                    
+
                     fs.writeFileSync(result.filePath, content)
                     existingFilePath = result.filePath
                     isFileExists = true
@@ -71,14 +68,6 @@ app.on("ready", () => {
 
     ipcMain.on("key: showFontSizeError", () => {
         dialog.showErrorBox("Error", "Invalid font size!")
-    })
-
-    ipcMain.on("key: gotoLine", (err, data) => {
-        mainWindow.webContents.send("key: doGotoLine", data)
-    })
-
-    ipcMain.on("key: showGotoLineError", () => {
-        dialog.showErrorBox("Error", "Invalid line number!")
     })
 
     mainWindow.on("close", () => {
@@ -154,14 +143,9 @@ const mainMenuTemplate = [
             {
                 label: "Go to Selected Line",
                 click() {
-                    if (isGotoSelectedLineWindowOpened) {
-                        dialog.showErrorBox("Error", "This window already opened!")
-                    } else {
-                        openGotoSelectedLineWindow()
-                    }
-
-                    isGotoSelectedLineWindowOpened = true
-                }
+                    mainWindow.webContents.send("key: gotoLine")
+                },
+                accelerator: isDarwin ? "Cmd+G" : "Ctrl+G"
             }
         ]
     },
@@ -176,7 +160,7 @@ const mainMenuTemplate = [
                     } else {
                         newSettingsWindow()
                     }
-    
+
                     isSettingsWindowOpened = true
                 },
                 accelerator: isDarwin ? "Cmd+T" : "Ctrl+T"
@@ -231,41 +215,10 @@ function newSettingsWindow() {
     })
 }
 
-function openGotoSelectedLineWindow() {
-    gotoSelectedLineWindow = new BrowserWindow({
-        width: 350,
-        height: 165,
-        title: "Go to Selected Line",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    gotoSelectedLineWindow.setMenu(null)
-
-    gotoSelectedLineWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/gotoSelectedLine.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    gotoSelectedLineWindow.on("close", () => {
-        gotoSelectedLineWindow = null
-        isGotoSelectedLineWindowOpened = false
-    })
-}
-
 function openNewFile() {
     dialog.showSaveDialog({
         title: "New File",
-        filters: [
-            { name: "All Files", extensions: ["*"] }
-        ]
+        filters: getFilters()
     }).then(result => {
         if (!result.canceled) {
             const filePath = result.filePath
@@ -329,4 +282,12 @@ function handleFileExtension(fileExtension) {
             dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in plain text mode.")
             mainWindow.webContents.send("key: setTextMode")
     }
+}
+
+function getFilters() {
+    filters = [
+        { name: "All Files", extensions: ["*"] }
+    ]
+
+    return filters
 }
