@@ -80,6 +80,14 @@ ipcRenderer.on("key: redo", () => {
     editor.redo()
 })
 
+ipcRenderer.on("key: removeLine", () => {
+    editor.execCommand("removeline")
+})
+
+ipcRenderer.on("key: toggleComment", () => {
+    editor.execCommand("togglecomment")
+})
+
 ipcRenderer.on("key: doSearchAndReplace", () => {
     editor.execCommand("find")
 })

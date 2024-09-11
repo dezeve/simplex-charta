@@ -165,6 +165,19 @@ const mainMenuTemplate = [
                     mainWindow.webContents.send("key: redo")
                 },
                 accelerator: isDarwin ? "Cmd+Y" : "Ctrl+Y"
+            },
+            {
+                label: "Remove Line",
+                click() {
+                    mainWindow.webContents.send("key: removeLine")
+                },
+                accelerator: isDarwin ? "Cmd+D" : "Ctrl+D"
+            },
+            {
+                label: "Toggle Comment",
+                click() {
+                    mainWindow.webContents.send("key: toggleComment")
+                }
             }
         ]
     },
