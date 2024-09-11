@@ -13,9 +13,11 @@ const offcanvas = new bootstrap.Offcanvas(gotoLineOffcanvas)
 const gotoLineInput = document.getElementById("gotoLineInput")
 const gotoLineButton = document.getElementById("gotoLineButton")
 
+var nativeSetOption = editor.setOption
+
 editor.setTheme(theme)
-editor.session.setMode("ace/mode/text")
 editor.setFontSize(fontSize)
+editor.session.setMode("ace/mode/text")
 
 editor.setOptions({
     enableLiveAutocompletion: true
@@ -66,32 +68,20 @@ ipcRenderer.on("key: setTextMode", () => {
     editor.session.setMode("ace/mode/text")
 })
 
-ipcRenderer.on("key: doSearchAndReplace", () => {
-    editor.execCommand("find")
-})
-
 ipcRenderer.on("key: gotoLine", () => {
     offcanvas.show()
 })
 
-ipcRenderer.on("key: updateEditorTheme", (event, selectedUpdateTheme) => {
-    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
-    settings.selectedTheme = selectedUpdateTheme
-    const updatedSettings = JSON.stringify(settings, null, 2)
-    fs.writeFileSync("src/config/config.json", updatedSettings)
-
-    const theme = settings.theme[selectedUpdateTheme];
-    editor.setTheme(theme)
+ipcRenderer.on("key: doSearchAndReplace", () => {
+    editor.execCommand("find")
 })
 
-ipcRenderer.on("key: updateEditorFontSize", (event, selectedFontSize) => {
-    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
-    settings.fontSize = selectedFontSize + "px"
-    const updatedSettings = JSON.stringify(settings, null, 2)
-    fs.writeFileSync("src/config/config.json", updatedSettings)
+ipcRenderer.on("key: selectAll", () => {
+    editor.execCommand("selectall")
+})
 
-    const fontSize = settings.fontSize
-    editor.setFontSize(fontSize)
+ipcRenderer.on("key: openSettings", () => {
+    editor.execCommand("showSettingsMenu")
 })
 
 gotoLineButton.addEventListener("click", () => {
@@ -106,7 +96,29 @@ function getFontSize() {
 }
 
 function getTheme() {
-    const settings = JSON.parse(fs.readFileSync("src/config/config.json"))
-    selectedTheme = settings.selectedTheme
-    return settings.theme[selectedTheme]
+    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+    return config.theme
+}
+
+function updateEditorTheme(selectedTheme) {
+    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+    config.theme = selectedTheme
+    const updatedConfig = JSON.stringify(config, null, 2)
+    fs.writeFileSync("src/config/config.json", updatedConfig)
+}
+
+function updateEditorFontSize(selectedFontSize) {
+    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+    config.fontSize = selectedFontSize + "px"
+    const updatedConfig = JSON.stringify(config, null, 2)
+    fs.writeFileSync("src/config/config.json", updatedConfig)
+}
+
+editor.setOption = function(key, value) {
+    if (key === "theme") {
+        updateEditorTheme(value)
+    } else if (key === "fontSize") {
+        updateEditorFontSize(value)
+    }
+    nativeSetOption.call(editor, key, value)
 }

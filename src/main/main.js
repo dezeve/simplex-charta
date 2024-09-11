@@ -8,8 +8,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = electron
 
 const isDarwin = process.platform === "darwin"
 
-let isSettingsWindowOpened = false
-
 let isFileExists = false
 let existingFilePath
 
@@ -146,6 +144,13 @@ const mainMenuTemplate = [
                     mainWindow.webContents.send("key: gotoLine")
                 },
                 accelerator: isDarwin ? "Cmd+G" : "Ctrl+G"
+            },
+            {
+                label: "Select All",
+                click() {
+                    mainWindow.webContents.send("key: selectAll")
+                },
+                accelerator: isDarwin ? "Cmd+A" : "Ctrl+A"
             }
         ]
     },
@@ -155,15 +160,9 @@ const mainMenuTemplate = [
             {
                 label: "Open Settings",
                 click() {
-                    if (isSettingsWindowOpened) {
-                        dialog.showErrorBox("Error", "This window already opened!")
-                    } else {
-                        newSettingsWindow()
-                    }
-
-                    isSettingsWindowOpened = true
+                    mainWindow.webContents.send("key: openSettings")
                 },
-                accelerator: isDarwin ? "Cmd+T" : "Ctrl+T"
+                accelerator: isDarwin ? "Cmd+," : "Ctrl+,"
             }
         ]
     },
@@ -185,35 +184,6 @@ const mainMenuTemplate = [
         ]
     }
 ]
-
-function newSettingsWindow() {
-    settingsWindow = new BrowserWindow({
-        width: 450,
-        height: 300,
-        title: "Settings",
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            enableRemoteModule: true
-        },
-        resizable: false
-    })
-
-    settingsWindow.setMenu(null)
-
-    settingsWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, "../pages/settings.html"),
-            protocol: "file:",
-            slashes: true
-        })
-    )
-
-    settingsWindow.on("close", () => {
-        settingsWindow = null
-        isSettingsWindowOpened = false
-    })
-}
 
 function openNewFile() {
     dialog.showSaveDialog({
