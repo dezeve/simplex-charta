@@ -72,6 +72,14 @@ ipcRenderer.on("key: gotoLine", () => {
     offcanvas.show()
 })
 
+ipcRenderer.on("key: undo", () => {
+    editor.undo()
+})
+
+ipcRenderer.on("key: redo", () => {
+    editor.redo()
+})
+
 ipcRenderer.on("key: doSearchAndReplace", () => {
     editor.execCommand("find")
 })

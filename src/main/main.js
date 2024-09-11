@@ -151,6 +151,20 @@ const mainMenuTemplate = [
                     mainWindow.webContents.send("key: selectAll")
                 },
                 accelerator: isDarwin ? "Cmd+A" : "Ctrl+A"
+            },
+            {
+                label: "Undo",
+                click() {
+                    mainWindow.webContents.send("key: undo")
+                },
+                accelerator: isDarwin ? "Cmd+Z" : "Ctrl+Z"
+            },
+            {
+                label: "Redo",
+                click() {
+                    mainWindow.webContents.send("key: redo")
+                },
+                accelerator: isDarwin ? "Cmd+Y" : "Ctrl+Y"
             }
         ]
     },
