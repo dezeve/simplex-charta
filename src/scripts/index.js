@@ -8,11 +8,6 @@ const editor = ace.edit("editor")
 const fontSize = getFontSize()
 const theme = getTheme()
 
-const gotoLineOffcanvas = document.getElementById("gotoLineOffcanvas")
-const offcanvas = new bootstrap.Offcanvas(gotoLineOffcanvas)
-const gotoLineInput = document.getElementById("gotoLineInput")
-const gotoLineButton = document.getElementById("gotoLineButton")
-
 var nativeSetOption = editor.setOption
 
 editor.setTheme(theme)
@@ -68,16 +63,16 @@ ipcRenderer.on("key: setTextMode", () => {
     editor.session.setMode("ace/mode/text")
 })
 
-ipcRenderer.on("key: gotoLine", () => {
-    offcanvas.show()
-})
-
 ipcRenderer.on("key: undo", () => {
     editor.undo()
 })
 
 ipcRenderer.on("key: redo", () => {
     editor.redo()
+})
+
+ipcRenderer.on("key: gotoLine", () => {
+    editor.execCommand("gotoline")
 })
 
 ipcRenderer.on("key: removeLine", () => {
@@ -88,7 +83,7 @@ ipcRenderer.on("key: toggleComment", () => {
     editor.execCommand("togglecomment")
 })
 
-ipcRenderer.on("key: doSearchAndReplace", () => {
+ipcRenderer.on("key: find", () => {
     editor.execCommand("find")
 })
 
@@ -98,12 +93,6 @@ ipcRenderer.on("key: selectAll", () => {
 
 ipcRenderer.on("key: openSettings", () => {
     editor.execCommand("showSettingsMenu")
-})
-
-gotoLineButton.addEventListener("click", () => {
-    if (!isNaN(gotoLineInput.value - gotoLineInput.value) && gotoLineInput.value.trim() !== "") {
-        editor.gotoLine(gotoLineInput.value)
-    }
 })
 
 function getFontSize() {

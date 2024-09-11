@@ -132,9 +132,9 @@ const mainMenuTemplate = [
         label: "Edit",
         submenu: [
             {
-                label: "Search and Replace",
+                label: "Find",
                 click() {
-                    mainWindow.webContents.send("key: doSearchAndReplace")
+                    mainWindow.webContents.send("key: find")
                 },
                 accelerator: isDarwin ? "Cmd+F" : "Ctrl+F"
             },
@@ -143,7 +143,7 @@ const mainMenuTemplate = [
                 click() {
                     mainWindow.webContents.send("key: gotoLine")
                 },
-                accelerator: isDarwin ? "Cmd+G" : "Ctrl+G"
+                accelerator: isDarwin ? "Cmd+L" : "Ctrl+L"
             },
             {
                 label: "Select All",

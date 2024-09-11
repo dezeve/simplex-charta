@@ -4,41 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-        href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style/main.css">
     <title>simplex-charta</title>
 </head>
 
 <body>
     <div id="editor"></div>
-    <div class="offcanvas offcanvas-bottom" data-bs-scroll="true"
-        data-bs-backdrop="false" tabindex="-1" id="gotoLineOffcanvas">
-        <div class="offcanvas-header">
-            <div class="d-flex gap-2">
-                <div class="col-auto my-auto">
-                    <span class="h5 fw-bold">Enter line number:</span>
-                </div>
-                <div class="col-auto" style="width: 100px;">
-                    <input id="gotoLineInput" type="number"
-                        class="form-control">
-                </div>
-                <div class="col-auto">
-                    <button id="gotoLineButton"
-                        class="btn btn-primary fw-bold">Submit</button>
-                </div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-    </div>
     <script src="../../node_modules/ace-builds/src-noconflict/ace.js">
     </script>
     <script
         src="../../node_modules/ace-builds/src-noconflict/ext-language_tools.js">
         </script>
-    <script
-        src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="../scripts/index.js">
     </script>
 </body>
