@@ -35,7 +35,7 @@ app.on("ready", () => {
     const mainMenu = electron.Menu.buildFromTemplate(mainMenuTemplate)
     Menu.setApplicationMenu(mainMenu)
 
-    ipcMain.on("key: saveFile", (event, content) => {
+    ipcMain.on("key: saveFile", (e, content) => {
         if (!isFileExists) {
             dialog.showSaveDialog({
                 title: "Save File",
@@ -56,16 +56,8 @@ app.on("ready", () => {
         }
     })
 
-    ipcMain.on("key: updateEditorTheme", (e, selectedUpdateTheme) => {
-        mainWindow.webContents.send("key: updateEditorTheme", selectedUpdateTheme)
-    })
-
-    ipcMain.on("key: updateFontSize", (e, selectedFontSize) => {
-        mainWindow.webContents.send("key: updateEditorFontSize", selectedFontSize)
-    })
-
-    ipcMain.on("key: showFontSizeError", () => {
-        dialog.showErrorBox("Error", "Invalid font size!")
+    ipcMain.on("key: showFileExtensionNotFound", () => {
+        dialog.showErrorBox("File Extension Not Found", "The program could not recognize the file extension and will run in plain text mode.")
     })
 
     mainWindow.on("close", () => {
@@ -250,35 +242,7 @@ function openFile() {
 }
 
 function handleFileExtension(fileExtension) {
-    switch (fileExtension) {
-        case ".js":
-            mainWindow.webContents.send("key: setJavaScriptMode")
-            break;
-        case ".html":
-            mainWindow.webContents.send("key: setHTMLMode")
-            break;
-        case ".py":
-            mainWindow.webContents.send("key: setPythonMode")
-            break;
-        case ".css":
-            mainWindow.webContents.send("key: setCSSMode")
-            break;
-        case ".php":
-            mainWindow.webContents.send("key: setPHPMode")
-            break;
-        case ".java":
-            mainWindow.webContents.send("key: setJavaMode")
-            break;
-        case ".json":
-            mainWindow.webContents.send("key: setJSONMode")
-            break;
-        case ".txt":
-            mainWindow.webContents.send("key: setTextMode")
-            break;
-        default:
-            dialog.showErrorBox("Error", "The program could not recognize the file extension and will run in plain text mode.")
-            mainWindow.webContents.send("key: setTextMode")
-    }
+    mainWindow.webContents.send("key: setMode", fileExtension)
 }
 
 function getFilters() {

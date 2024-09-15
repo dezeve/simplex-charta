@@ -31,36 +31,35 @@ ipcRenderer.on("key: closeFile", () => {
     editor.setValue(null)
 })
 
-ipcRenderer.on("key: setJavaScriptMode", () => {
-    editor.session.setMode("ace/mode/javascript")
-})
-
-ipcRenderer.on("key: setHTMLMode", () => {
-    editor.session.setMode("ace/mode/html")
-})
-
-ipcRenderer.on("key: setPythonMode", () => {
-    editor.session.setMode("ace/mode/python")
-})
-
-ipcRenderer.on("key: setCSSMode", () => {
-    editor.session.setMode("ace/mode/css")
-})
-
-ipcRenderer.on("key: setPHPMode", () => {
-    editor.session.setMode("ace/mode/php")
-})
-
-ipcRenderer.on("key: setJavaMode", () => {
-    editor.session.setMode("ace/mode/java")
-})
-
-ipcRenderer.on("key: setJSONMode", () => {
-    editor.session.setMode("ace/mode/json")
-})
-
-ipcRenderer.on("key: setTextMode", () => {
-    editor.session.setMode("ace/mode/text")
+ipcRenderer.on("key: setMode", (e, fileExtension) => {
+    switch (fileExtension) {
+        case ".js":
+            editor.session.setMode("ace/mode/javascript")
+            break;
+        case ".html":
+            editor.session.setMode("ace/mode/html")
+            break;
+        case ".py":
+            editor.session.setMode("ace/mode/python")
+            break;
+        case ".css":
+            editor.session.setMode("ace/mode/css")
+            break;
+        case ".php":
+            editor.session.setMode("ace/mode/php")
+            break;
+        case ".java":
+            editor.session.setMode("ace/mode/java")
+            break;
+        case ".json":
+            editor.session.setMode("ace/mode/json")
+            break;
+        case ".txt":
+            editor.session.setMode("ace/mode/text")
+            break;
+        default:
+            ipcRenderer.send("key: showFileExtensionNotFound")
+    }
 })
 
 ipcRenderer.on("key: undo", () => {
