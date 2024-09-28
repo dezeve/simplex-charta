@@ -14,7 +14,7 @@ editor.setFontSize(config.fontSize)
 editor.session.setMode("ace/mode/text")
 
 editor.setOptions({
-    enableLiveAutocompletion: config.liveAutocompletion
+    enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
 ipcRenderer.on("key: openFile", (e, openedFileContent) => {
@@ -94,20 +94,22 @@ ipcRenderer.on("key: openSettings", () => {
 
 function updateEditorTheme(selectedTheme, config) {
     config.theme = selectedTheme
-    const updatedConfig = JSON.stringify(config, null, 2)
-    fs.writeFileSync("src/config/config.json", updatedConfig)
+    updateConfig(config)
 }
 
 function updateEditorFontSize(selectedFontSize, config) {
     config.fontSize = selectedFontSize + "px"
-    const updatedConfig = JSON.stringify(config, null, 2)
-    fs.writeFileSync("src/config/config.json", updatedConfig)
+    updateConfig(config)
 }
 
 function updateLiveAutocompletion(selectedValue, config) {
-    config.liveAutocompletion = selectedValue
-    const updatedConfig = JSON.stringify(config, null, 2)
-    fs.writeFileSync("src/config/config.json", updatedConfig)
+    config.useLiveAutocompletion = selectedValue
+    updateConfig(config)
+}
+
+function updateConfig(config) {
+    config = JSON.stringify(config, null, 2)
+    fs.writeFileSync("src/config/config.json", config)
 }
 
 editor.setOption = function(key, value) {
