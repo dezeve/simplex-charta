@@ -1,4 +1,5 @@
 {
   "theme": "ace/theme/dawn",
-  "fontSize": "16px"
+  "fontSize": "16px",
+  "liveAutocompletion": true
 }
