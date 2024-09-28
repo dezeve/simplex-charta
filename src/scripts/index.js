@@ -4,9 +4,11 @@ const fs = require("fs")
 
 ace.require("ace/ext/language_tools")
 
+const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+
 const editor = ace.edit("editor")
-const fontSize = getFontSize()
-const theme = getTheme()
+const fontSize = getFontSize(config)
+const theme = getTheme(config)
 
 var nativeSetOption = editor.setOption
 
@@ -94,25 +96,21 @@ ipcRenderer.on("key: openSettings", () => {
     editor.execCommand("showSettingsMenu")
 })
 
-function getFontSize() {
-    const fontSize = JSON.parse(fs.readFileSync("src/config/config.json")).fontSize
-    return fontSize
+function getFontSize(config) {
+    return config.fontSize
 }
 
-function getTheme() {
-    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+function getTheme(config) {
     return config.theme
 }
 
-function updateEditorTheme(selectedTheme) {
-    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+function updateEditorTheme(selectedTheme, config) {
     config.theme = selectedTheme
     const updatedConfig = JSON.stringify(config, null, 2)
     fs.writeFileSync("src/config/config.json", updatedConfig)
 }
 
-function updateEditorFontSize(selectedFontSize) {
-    const config = JSON.parse(fs.readFileSync("src/config/config.json"))
+function updateEditorFontSize(selectedFontSize, config) {
     config.fontSize = selectedFontSize + "px"
     const updatedConfig = JSON.stringify(config, null, 2)
     fs.writeFileSync("src/config/config.json", updatedConfig)
@@ -120,9 +118,9 @@ function updateEditorFontSize(selectedFontSize) {
 
 editor.setOption = function(key, value) {
     if (key === "theme") {
-        updateEditorTheme(value)
+        updateEditorTheme(value, config)
     } else if (key === "fontSize") {
-        updateEditorFontSize(value)
+        updateEditorFontSize(value, config)
     }
     nativeSetOption.call(editor, key, value)
 }
