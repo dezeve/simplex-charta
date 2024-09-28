@@ -5,28 +5,24 @@ const fs = require("fs")
 ace.require("ace/ext/language_tools")
 
 const config = JSON.parse(fs.readFileSync("src/config/config.json"))
-
 const editor = ace.edit("editor")
-const fontSize = getFontSize(config)
-const theme = getTheme(config)
 
 var nativeSetOption = editor.setOption
 
-editor.setTheme(theme)
-editor.setFontSize(fontSize)
+editor.setTheme(config.theme)
+editor.setFontSize(config.fontSize)
 editor.session.setMode("ace/mode/text")
 
 editor.setOptions({
     enableLiveAutocompletion: true
 })
 
-ipcRenderer.on("key: openFile", (event, openedFileContent) => {
+ipcRenderer.on("key: openFile", (e, openedFileContent) => {
     editor.setValue(openedFileContent)
 })
 
 ipcRenderer.on("key: saveFile", () => {
-    const content = editor.getValue()
-    ipcRenderer.send("key: saveFile", content)
+    ipcRenderer.send("key: saveFile", editor.getValue())
 })
 
 ipcRenderer.on("key: closeFile", () => {
@@ -95,14 +91,6 @@ ipcRenderer.on("key: selectAll", () => {
 ipcRenderer.on("key: openSettings", () => {
     editor.execCommand("showSettingsMenu")
 })
-
-function getFontSize(config) {
-    return config.fontSize
-}
-
-function getTheme(config) {
-    return config.theme
-}
 
 function updateEditorTheme(selectedTheme, config) {
     config.theme = selectedTheme
