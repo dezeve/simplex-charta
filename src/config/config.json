@@ -1,5 +1,6 @@
 {
   "theme": "ace/theme/dawn",
+  "keyboardHandler": null,
   "fontSize": "16px",
   "useLiveAutocompletion": true
 }

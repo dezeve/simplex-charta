@@ -14,6 +14,7 @@ editor.setFontSize(config.fontSize)
 editor.session.setMode("ace/mode/text")
 
 editor.setOptions({
+    keyboardHandler: config.keyboardHandler,
     enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
@@ -97,6 +98,11 @@ function updateEditorTheme(selectedTheme, config) {
     updateConfig(config)
 }
 
+function updateKeyboardHandler(selectedKeyboardHandler, config) {
+    config.keyboardHandler = selectedKeyboardHandler
+    updateConfig(config)
+}
+
 function updateEditorFontSize(selectedFontSize, config) {
     config.fontSize = selectedFontSize + "px"
     updateConfig(config)
@@ -115,10 +121,12 @@ function updateConfig(config) {
 editor.setOption = function(key, value) {
     if (key === "theme") {
         updateEditorTheme(value, config)
+    } else if (key === "keyboardHandler") {
+        updateKeyboardHandler(value, config)
     } else if (key === "fontSize") {
         updateEditorFontSize(value, config)
     } else if (key === "enableLiveAutocompletion") {
         updateLiveAutocompletion(value, config)
-    }
+    } 
     nativeSetOption.call(editor, key, value)
 }
