@@ -16,6 +16,7 @@ editor.session.setMode("ace/mode/text")
 editor.setOptions({
     keyboardHandler: config.keyboardHandler,
     wrap: config.wrap,
+    cursorStyle: config.cursorStyle,
     enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
@@ -114,6 +115,11 @@ function updateWrap(selectedWrap, config) {
     updateConfig(config)
 }
 
+function updateCursorStyle(selectedCursorStyle, config) {
+    config.cursorStyle = selectedCursorStyle
+    updateConfig(config)
+}
+
 function updateLiveAutocompletion(selectedValue, config) {
     config.useLiveAutocompletion = selectedValue
     updateConfig(config)
@@ -133,6 +139,8 @@ editor.setOption = function(key, value) {
         updateEditorFontSize(value, config)
     } else if (key === "wrap") {
         updateWrap(value, config)
+    } else if (key === "cursorStyle") {
+        updateCursorStyle(value, config)
     } else if (key === "enableLiveAutocompletion") {
         updateLiveAutocompletion(value, config)
     } 

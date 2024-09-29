@@ -3,5 +3,6 @@
   "keyboardHandler": null,
   "fontSize": "16px",
   "wrap": "off",
+  "cursorStyle": "ace",
   "useLiveAutocompletion": true
 }
