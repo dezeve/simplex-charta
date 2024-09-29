@@ -15,6 +15,7 @@ editor.session.setMode("ace/mode/text")
 
 editor.setOptions({
     keyboardHandler: config.keyboardHandler,
+    wrap: config.wrap,
     enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
@@ -108,6 +109,11 @@ function updateEditorFontSize(selectedFontSize, config) {
     updateConfig(config)
 }
 
+function updateWrap(selectedWrap, config) {
+    config.wrap = selectedWrap
+    updateConfig(config)
+}
+
 function updateLiveAutocompletion(selectedValue, config) {
     config.useLiveAutocompletion = selectedValue
     updateConfig(config)
@@ -125,6 +131,8 @@ editor.setOption = function(key, value) {
         updateKeyboardHandler(value, config)
     } else if (key === "fontSize") {
         updateEditorFontSize(value, config)
+    } else if (key === "wrap") {
+        updateWrap(value, config)
     } else if (key === "enableLiveAutocompletion") {
         updateLiveAutocompletion(value, config)
     } 
