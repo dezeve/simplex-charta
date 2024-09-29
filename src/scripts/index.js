@@ -17,6 +17,7 @@ editor.setOptions({
     keyboardHandler: config.keyboardHandler,
     wrap: config.wrap,
     cursorStyle: config.cursorStyle,
+    foldStyle: config.foldStyle,
     enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
@@ -120,6 +121,11 @@ function updateCursorStyle(selectedCursorStyle, config) {
     updateConfig(config)
 }
 
+function updateFoldStyle(selectedFoldStyle, config) {
+    config.foldStyle = selectedFoldStyle
+    updateConfig(config)
+}
+
 function updateLiveAutocompletion(selectedValue, config) {
     config.useLiveAutocompletion = selectedValue
     updateConfig(config)
@@ -141,6 +147,8 @@ editor.setOption = function(key, value) {
         updateWrap(value, config)
     } else if (key === "cursorStyle") {
         updateCursorStyle(value, config)
+    } else if (key === "foldStyle") {
+        updateFoldStyle(value, config)
     } else if (key === "enableLiveAutocompletion") {
         updateLiveAutocompletion(value, config)
     } 

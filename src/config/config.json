@@ -4,5 +4,6 @@
   "fontSize": "16px",
   "wrap": "off",
   "cursorStyle": "ace",
+  "foldStyle": "markbegin",
   "useLiveAutocompletion": true
 }
