@@ -18,6 +18,8 @@ editor.setOptions({
     wrap: config.wrap,
     cursorStyle: config.cursorStyle,
     foldStyle: config.foldStyle,
+    useSoftTabs: config.useSoftTabs,
+    tabSize: config.tabSize,
     enableLiveAutocompletion: config.useLiveAutocompletion
 })
 
@@ -126,6 +128,16 @@ function updateFoldStyle(selectedFoldStyle, config) {
     updateConfig(config)
 }
 
+function updateSoftTabs(selectedValue, config) {
+    config.useSoftTabs = selectedValue
+    updateConfig(config)
+}
+
+function updateTabSize(selectedTabSize, config) {
+    config.tabSize = selectedTabSize
+    updateConfig(config)
+}
+
 function updateLiveAutocompletion(selectedValue, config) {
     config.useLiveAutocompletion = selectedValue
     updateConfig(config)
@@ -149,6 +161,10 @@ editor.setOption = function(key, value) {
         updateCursorStyle(value, config)
     } else if (key === "foldStyle") {
         updateFoldStyle(value, config)
+    } else if (key === "useSoftTabs") {
+        updateSoftTabs(value, config)
+    } else if (key === "tabSize") {
+        updateTabSize(value, config)
     } else if (key === "enableLiveAutocompletion") {
         updateLiveAutocompletion(value, config)
     } 
